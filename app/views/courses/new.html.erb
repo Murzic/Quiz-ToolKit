@@ -1,0 +1,10 @@
+<%= form_for :course, url: courses_path do |f| %>
+	<p>
+		<%= f.label :name %>
+		<%= f.text_field :name %>
+	</p>
+	<p>
+		<%= f.submit "Create" %>
+	</p>
+<% end %>	
+

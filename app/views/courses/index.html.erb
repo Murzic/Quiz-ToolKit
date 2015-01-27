@@ -1,0 +1,11 @@
+
+<p><%= link_to "Sign out", destroy_user_session_path, method: :delete %></p>
+<p><%= link_to 'Create course', new_course_path %></p>
+
+<% @courses.each do |course| %>
+	<h3>
+		<%= link_to course.name, course_path(course) %>
+		<%= link_to "edit", edit_course_path(course) 	%>
+		<%= link_to "destroy", course_path(course), method: :delete %>
+	</h3>
+<% end %>
