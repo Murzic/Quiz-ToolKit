@@ -24,6 +24,7 @@ class CoursesController < ApplicationController
 
 	def show
 		@course = Course.find(params[:id])
+		@quizzes = @course.quizzes.all
 	end
 
 	def update

@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   devise_for :users
-  resources :courses
+
+  resources :courses do
+    resources :quizzes
+  end
+  
   # root 'main#index'
   root 'courses#index'
 

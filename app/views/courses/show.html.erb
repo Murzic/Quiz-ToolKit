@@ -1,1 +1,21 @@
-<p><%= @course %></p>
+<p><h1><%= @course.name %></h1></p>
+<%= link_to "Back", courses_path %>
+
+<%= form_for [@course, @course.quizzes.build] do |f| %>
+	<p>
+		<%= f.label :name %>
+		<%= f.text_field :name %>
+	</p>
+	<p>
+		<%= f.submit "Create" %>
+	</p>
+<% end %>	
+
+<% @quizzes.each do |quiz| %>
+	<h3>
+		<%= link_to quiz.name %>
+		<%= link_to "destroy", [quiz.course, quiz], method: :delete %>
+	</h3>
+<% end %>
+
+
