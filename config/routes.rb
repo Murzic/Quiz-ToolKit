@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  resources :courses do
-    resources :quizzes
+  resources :users, only: 'index', shallow: true do
+    resources :courses do
+      resources :quizzes
+    end
   end
   
   # root 'main#index'

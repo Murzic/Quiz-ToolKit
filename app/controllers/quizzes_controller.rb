@@ -6,8 +6,10 @@ class QuizzesController < ApplicationController
 	end
 
 	def destroy
-		@course = Course.find(params[:course_id])
-		@quiz = @course.quizzes.find(params[:id])
+		# @course = Course.find(params[:course_id])
+		# @quiz = @course.quizzes.find(params[:id])
+		@quiz = Quiz.find(params[:id])
+		@course = @quiz.course
 		@quiz.destroy
 		redirect_to course_path(@course)
 	end

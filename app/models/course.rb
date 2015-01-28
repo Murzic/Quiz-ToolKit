@@ -1,3 +1,5 @@
 class Course < ActiveRecord::Base
-	has_many :quizzes
+	belongs_to :user
+	has_many :quizzes, dependent: :destroy
+	validates :name, presence: true
 end

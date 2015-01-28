@@ -1,6 +1,6 @@
 
 <p><%= link_to "Sign out", destroy_user_session_path, method: :delete %></p>
-<p><%= link_to 'Create course', new_course_path %></p>
+<p><%= link_to 'Create course', new_user_course_path(@user) %></p>
 
 <% @courses.each do |course| %>
 	<h3>

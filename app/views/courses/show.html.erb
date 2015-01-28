@@ -1,5 +1,5 @@
 <p><h1><%= @course.name %></h1></p>
-<%= link_to "Back", courses_path %>
+<%= link_to "Back", user_courses_path(@user) %>
 
 <%= form_for [@course, @course.quizzes.build] do |f| %>
 	<p>
@@ -14,7 +14,7 @@
 <% @quizzes.each do |quiz| %>
 	<h3>
 		<%= link_to quiz.name %>
-		<%= link_to "destroy", [quiz.course, quiz], method: :delete %>
+		<%= link_to "destroy", quiz_path(quiz), method: :delete %>
 	</h3>
 <% end %>
 
