@@ -11,6 +11,6 @@
 
 * Then run the server with `rails s` 
 
-* You can now access the application at http://localhost:3000
+* You can now access the application at [localhost:3000](http://localhost:3000)
 
 
