@@ -1,6 +1,6 @@
- #README
+# README
 -----------
- ## Installation and running
+## Installation and running
 
 
 * Install ruby 2.2.0 and rails 4.2.0
