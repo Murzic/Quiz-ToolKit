@@ -1,17 +1,19 @@
 class CoursesController < ApplicationController
 	before_action :authenticate_user!
+
 	def index
 		@user = current_user
-		@courses = Course.all
+		@courses = @user.courses.all
 	end
 
 	def new
-		@course = Course.new
+		@user = current_user
+		@course = @user.courses.new
 	end
 
 	def create
-		@course = Course.new(course_params)
-
+		@user = current_user
+		@course = @user.courses.new(course_params)
 		if @course.save
 			redirect_to user_courses_path	
 		else
