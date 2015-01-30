@@ -1,0 +1,16 @@
+
+%p
+	%h1= @course.name
+= link_to "Back", user_courses_path(@user)
+
+= form_for [@course, @course.quizzes.build] do |f|
+	%p
+		= f.label :name
+		= f.text_field :name
+	%p
+		= f.submit "Create"
+
+- @quizzes.each do |quiz|
+	%h3
+		= link_to quiz.name
+		= link_to "destroy", quiz_path(quiz), method: :delete
