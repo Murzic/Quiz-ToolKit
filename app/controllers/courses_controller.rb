@@ -23,6 +23,8 @@ class CoursesController < ApplicationController
 
 	def edit
 		@course = Course.find(params[:id])
+		@user = current_user
+		@courses = @user.courses.all
 	end
 
 	def show
