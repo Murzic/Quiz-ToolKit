@@ -5,6 +5,9 @@ class QuizzesController < ApplicationController
 		redirect_to course_path(@course)
 	end
 
+	def index
+	end
+
 	def destroy
 		# @course = Course.find(params[:course_id])
 		# @quiz = @course.quizzes.find(params[:id])

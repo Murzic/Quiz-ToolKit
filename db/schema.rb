@@ -11,7 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150128143011) do
+ActiveRecord::Schema.define(version: 20150207163846) do
+
+  create_table "answers", force: :cascade do |t|
+    t.text     "name"
+    t.binary   "image"
+    t.boolean  "correct"
+    t.integer  "question_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "answers", ["question_id"], name: "index_answers_on_question_id"
 
   create_table "courses", force: :cascade do |t|
     t.string   "name"
@@ -21,6 +32,30 @@ ActiveRecord::Schema.define(version: 20150128143011) do
   end
 
   add_index "courses", ["user_id"], name: "index_courses_on_user_id"
+
+  create_table "groups", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "groups_questions", id: false, force: :cascade do |t|
+    t.integer "group_id"
+    t.integer "question_id"
+  end
+
+  add_index "groups_questions", ["group_id"], name: "index_groups_questions_on_group_id"
+  add_index "groups_questions", ["question_id"], name: "index_groups_questions_on_question_id"
+
+  create_table "questions", force: :cascade do |t|
+    t.text     "name"
+    t.binary   "image"
+    t.integer  "quiz_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "questions", ["quiz_id"], name: "index_questions_on_quiz_id"
 
   create_table "quizzes", force: :cascade do |t|
     t.string   "name"
