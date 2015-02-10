@@ -1,0 +1,20 @@
+
+.panel.panel-default.col-md-offset-2.col-md-8
+	%ol.breadcrumb
+		%li= link_to "Courses", user_courses_path(current_user)
+		%li= link_to @course.name, course_path(@course)
+		%li.active= @quiz.name
+
+	= link_to "New question", new_quiz_question_path(@quiz), class: "btn btn-default"
+	.panel-body
+		.list-group
+			- @questions.each do |question|
+				.list-group-item
+					.row
+						.lead.col-md-11= "#{question.name}"
+						.col-md-1= link_to "Edit", edit_question_path(question) 
+					- question.answers.each do |answer|
+						.checkbox.disabled
+							%label
+								%input{type: "checkbox", value: "", disabled: true}
+								= answer.name 

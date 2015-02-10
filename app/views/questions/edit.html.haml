@@ -1,0 +1,51 @@
+
+.panel.panel-default.col-md-offset-2.col-md-8
+	%ol.breadcrumb
+		%li= link_to "Courses", user_courses_path(current_user)
+		%li= link_to @course.name, course_path(@course)
+		%li.active= @quiz.name
+
+	.panel-body
+		.list-group
+			- @questions.each do |question|
+				- if question.id == @question.id
+					.list-group-item
+						.row
+							= form_for :question, url: question_path(question), method: :patch do |f|
+								.form
+									.form-group
+										= f.label :name, class: "sr-only"
+										.textarea.col-md-8= f.text_area :name, rows: "2", class: "form-control list-group-item", autofocus: true
+										.col-md-1= f.submit "Update", class: "btn"
+							.col-md-offset-10= link_to "Back to Quiz", quiz_path(@quiz), class: "btn btn-default"
+
+						- @answers.each do |answer|
+							.row	
+								.form
+									.form-group.form-group-sm												
+										= form_for answer, url: answer_path(answer), method: :patch do |f|
+											.checkbox
+												%label
+													= f.check_box :correct
+												= f.label :name, class: "sr-only"
+												.textarea.col-md-4= f.text_area :name, rows: "1", class: "form-control list-group-item"
+												= f.submit "Update", class: "btn"
+						= form_for :answer, url: question_answers_path(question) do |f|
+							.row
+								.form
+									.form-group.form-group-sm
+										.checkbox
+											%label
+												=f.check_box :correct
+											= f.label :name, class: "sr-only"
+											.textarea.col-md-4= f.text_area :name, rows: "1", class: "form-control list-group-item"
+											= f.submit "Add answer", class: "btn"
+				- else
+					.list-group-item
+						.row
+							%p.lead.col-md-11= "#{question.name}"
+						- question.answers.each do |answer|
+							.checkbox.disabled
+								%label
+									%input{type: "checkbox", value: "", disabled: true}
+									= answer.name 

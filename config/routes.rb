@@ -6,6 +6,15 @@ Rails.application.routes.draw do
       resources :quizzes
     end
   end
+
+  resources :quizzes, only: 'index', shallow: true do
+    resources :questions
+  end
+
+  resources :questions, only: '/', shallow: true do
+    resources :answers
+  end
+
   
   # root 'main#index'
   root 'courses#index'

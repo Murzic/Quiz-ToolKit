@@ -5,7 +5,10 @@ class QuizzesController < ApplicationController
 		redirect_to course_path(@course)
 	end
 
-	def index
+	def show
+		@quiz = Quiz.find(params[:id])
+		@questions = @quiz.questions.all
+		@course = @quiz.course
 	end
 
 	def destroy
