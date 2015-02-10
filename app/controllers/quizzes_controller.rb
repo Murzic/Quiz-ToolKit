@@ -11,6 +11,22 @@ class QuizzesController < ApplicationController
 		@course = @quiz.course
 	end
 
+	def edit
+		@quiz = Quiz.find(params[:id])
+		@course = @quiz.course
+		@quizzes = @course.quizzes.all
+	end
+
+	def update
+		@quiz = Quiz.find(params[:id])
+		@course = @quiz.course
+		if @quiz.update(quiz_params)
+			redirect_to course_path(@course)
+		else
+			render 'edit'
+		end
+	end
+
 	def destroy
 		# @course = Course.find(params[:course_id])
 		# @quiz = @course.quizzes.find(params[:id])
