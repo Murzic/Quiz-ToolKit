@@ -22,14 +22,16 @@
 						- @answers.each do |answer|
 							.row	
 								.form
-									.form-group.form-group-sm												
+									.form-group.form-group-sm
 										= form_for answer, url: answer_path(answer), method: :patch do |f|
+											= f.label :name, class: "sr-only"
+											.textarea.col-md-4= f.text_area :name, rows: "1", class: "form-control list-group-item"
 											.checkbox
-												%label
+												%label.col-md-2
+													= f.label :correct, class: "sr-only"
 													= f.check_box :correct
-												= f.label :name, class: "sr-only"
-												.textarea.col-md-4= f.text_area :name, rows: "1", class: "form-control list-group-item"
-												= f.submit "Update", class: "btn"
+													= f.submit "Update", class: "btn"
+								.col-md-1= link_to "Destroy", answer_path(answer), method: :delete, class: "btn btn-default"
 						= form_for :answer, url: question_answers_path(question) do |f|
 							.row
 								.form

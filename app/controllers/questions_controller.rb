@@ -33,6 +33,13 @@ class QuestionsController < ApplicationController
 		end
 	end
 
+	def destroy
+		@question = Question.find(params[:id])
+		@quiz = @question.quiz
+		@question.destroy
+		redirect_to quiz_path(@quiz)
+	end
+
 	private
 
 	def question_params

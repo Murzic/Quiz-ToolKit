@@ -12,6 +12,12 @@ class AnswersController < ApplicationController
 		redirect_to :back
 	end
 
+	def destroy
+		@answer = Answer.find(params[:id])
+		@answer.destroy
+		redirect_to :back
+	end
+
 	private
 
 	def answer_params

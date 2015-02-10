@@ -11,8 +11,10 @@
 			- @questions.each do |question|
 				.list-group-item
 					.row
-						.lead.col-md-11= "#{question.name}"
-						.col-md-1= link_to "Edit", edit_question_path(question) 
+						.lead.col-md-10= "#{question.name}"
+						.col-md-1= link_to "Edit", edit_question_path(question)
+						.col-md-1= link_to "Destroy",
+							question_path(question), method: :delete 
 					- question.answers.each do |answer|
 						.checkbox.disabled
 							%label
