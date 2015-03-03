@@ -5,6 +5,7 @@
 		%li= link_to @course.name, course_path(@course)
 		%li.active= @quiz.name
 
+	= link_to "New question", new_quiz_question_path(@quiz), class: "btn btn-default"
 	.panel-body
 		.list-group
 			- @questions.each do |question|
@@ -32,6 +33,7 @@
 													= f.check_box :correct
 													= f.submit "Update", class: "btn"
 								.col-md-1= link_to "Destroy", answer_path(answer), method: :delete, class: "btn btn-default"
+
 						= form_for :answer, url: question_answers_path(question) do |f|
 							.row
 								.form

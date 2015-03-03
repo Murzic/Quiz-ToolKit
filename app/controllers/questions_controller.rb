@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
 	def edit
-		@question = Question.find(params[:id])
+		@question = Question.find(params[:id]) # Question to be edited
 		@answers = @question.answers.all
 		@quiz = @question.quiz
 		@questions = @quiz.questions.all
