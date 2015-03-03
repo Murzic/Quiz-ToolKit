@@ -19,6 +19,8 @@ gem 'therubyracer', platforms: :ruby
 
 # Haml 
 gem 'haml'
+# Paperclip for managing uploading images
+gem 'paperclip'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
