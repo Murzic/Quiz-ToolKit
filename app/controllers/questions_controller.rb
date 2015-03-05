@@ -29,7 +29,7 @@ class QuestionsController < ApplicationController
 		if @question.update(question_params)
 			redirect_to edit_question_path(@question)
 		else
-			render 'edit'
+			redirect_to edit_question_path(@question)			
 		end
 	end
 
@@ -43,6 +43,10 @@ class QuestionsController < ApplicationController
 	private
 
 	def question_params
-		params.require(:question).permit(:name)
+		begin
+			params.require(:question).permit(:name, :image)
+		rescue
+			Hash.new
+		end
 	end
 end

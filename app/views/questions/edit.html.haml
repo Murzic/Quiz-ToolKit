@@ -19,7 +19,12 @@
 										.textarea.col-md-8= f.text_area :name, rows: "2", class: "form-control list-group-item", autofocus: true
 										.col-md-1= f.submit "Update", class: "btn"
 							.col-md-offset-10= link_to "Back to Quiz", quiz_path(@quiz), class: "btn btn-default"
-
+						.row
+							.form
+								.form-group
+									= form_for :question, url: question_path(question), method: :patch, html: { multipart: true } do |f|
+										.col-md-4= f.file_field :image
+										= f.submit "Upload", class: "btn-xs btn-default"
 						- @answers.each do |answer|
 							.row	
 								.form
