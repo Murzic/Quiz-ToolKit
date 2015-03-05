@@ -14,12 +14,12 @@ class QuestionsController < ApplicationController
 	end
 
 	def create
-		@quiz = Quiz.find(params[:quiz_id])
+		@quiz = Quiz.find(params["quiz_id"])
 		@question = @quiz.questions.new(question_params)
 		if @question.save
 		 	redirect_to edit_question_path(@question)
 		else
-		 	redirect_to new_quiz_question_path(@quiz)
+		 	redirect_to edit_question_path(@question)
 		end
 	end
 

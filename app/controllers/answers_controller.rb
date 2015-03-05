@@ -21,6 +21,10 @@ class AnswersController < ApplicationController
 	private
 
 	def answer_params
-		params.require(:answer).permit(:name, :correct)
+		begin
+			params.require(:answer).permit(:name, :correct, :image)
+		rescue
+			Hash.new
+		end
 	end
 end
