@@ -1,23 +1,23 @@
 
 .panel.panel-default.col-md-offset-3.col-md-6
-	%ol.breadcrumb
-		%li.active Courses
+  %ol.breadcrumb
+    %li.active Courses
 
-	.panel-body
-		= form_for :course, url: user_courses_path(current_user) do |f|
-			.row
-				.form
-					.form-group.col-md-4
-						= f.label :name, class: "sr-only"
-						= f.text_field :name, class: "form-control"
-					.col-md-8
-						= f.submit "Create", class: "btn btn-default"
-		.list-group
-			- @courses.each do |course|
-				.row
-					.col-md-4= link_to course.name, course_path(course), class: "list-group-item"
-					.col-md-8
-						= link_to "Edit", edit_course_path(course), class: "btn btn-default"
-						= link_to "Remove", course_path(course), method: :delete, class: "btn btn-default", data: { confirm: 'Are you sure?' }
-		
+  .panel-body
+    = form_for :course, url: user_courses_path(current_user) do |f|
+      .row
+        .form
+          .form-group.col-md-4
+            = f.label :name, class: "sr-only"
+            = f.text_field :name, class: "form-control"
+          .col-md-8
+            = f.submit "Create", class: "btn btn-default"
+    .list-group
+      - @courses.each do |course|
+        .row
+          .col-md-4= link_to course.name, course_path(course), class: "list-group-item"
+          .col-md-8
+            = link_to "Edit", edit_course_path(course), class: "btn btn-default"
+            = link_to "Remove", course_path(course), method: :delete, class: "btn btn-default", data: { confirm: 'Are you sure?' }
+    
 

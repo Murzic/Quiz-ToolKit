@@ -1,17 +1,17 @@
 
 .panel.panel-default.col-md-offset-2.col-md-8
-	%ol.breadcrumb
-		%li= link_to "Courses", user_courses_path(current_user)
-		%li= link_to @course.name, course_path(@course)
-		%li.active= @quiz.name
+  %ol.breadcrumb
+    %li= link_to "Courses", user_courses_path(current_user)
+    %li= link_to @course.name, course_path(@course)
+    %li.active= @quiz.name
 
-	.panel-body
-		.list-group
-			.list-group-item
-				= form_for :question, url: quiz_questions_path(@quiz) do |f|
-					.row
-						.form
-							.form-group
-								= f.label :name, class: "sr-only"
-								.textarea.col-md-11= f.text_area :name, rows: "2", class: "form-control list-group-item", placeholder: "New question", autofocus: true
-								= f.submit "Save", class: "btn"
+  .panel-body
+    .list-group
+      .list-group-item
+        = form_for :question, url: quiz_questions_path(@quiz) do |f|
+          .row
+            .form
+              .form-group
+                = f.label :name, class: "sr-only"
+                .textarea.col-md-11= f.text_area :name, rows: "2", class: "form-control list-group-item", placeholder: "New question", autofocus: true
+                = f.submit "Save", class: "btn"

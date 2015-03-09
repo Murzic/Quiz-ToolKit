@@ -1,8 +1,8 @@
 - if current_user
-	.navbar.navbar-default
-		.container
-			.navbar-header
-				= link_to "QTK", user_courses_path(current_user), class: "navbar-brand"
-			.navbar-right
-				%p.navbar-text= current_user.email
-				= link_to "Sign out", destroy_user_session_path, method: :delete, class: "btn btn-default navbar-btn"
+  .navbar.navbar-default
+    .container
+      .navbar-header
+        = link_to "QTK", user_courses_path(current_user), class: "navbar-brand"
+      .navbar-right
+        %p.navbar-text= current_user.email
+        = link_to "Sign out", destroy_user_session_path, method: :delete, class: "btn btn-default navbar-btn"
