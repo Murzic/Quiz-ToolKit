@@ -59,6 +59,19 @@
                           = f.label :name, class: "sr-only"
                           .textarea.col-md-7= f.text_area :name, rows: "1", class: "form-control list-group-item"
                           = f.submit "Add answer", class: "btn btn-primary"
+              .col-md-5
+                - @groups.each do |group|
+                  .label.label-success
+                    = group.name
+                    = link_to '', group_path(group), method: :destroy, class: "glyphicon glyphicon-remove" 
+
+                = form_for :group, url: question_groups_path(question) do |f|
+                  .row
+                    .form
+                      .form_group.form-group-sm
+                        = f.label :name, class: "sr-only"
+                        .col-md-7= f.text_field :name, class: "form-control"
+                        = f.submit "Add new group", class: "btn btn-default btn-sm"
         - else
           .list-group-item
             .row

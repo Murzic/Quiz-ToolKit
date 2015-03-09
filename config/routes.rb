@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   resources :questions, only: '/', shallow: true do
     resources :answers
+    resources :groups
   end
 
   
