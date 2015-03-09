@@ -19,8 +19,8 @@
 				.row
 					.col-md-4= link_to quiz.name, quiz_path(quiz), class: "list-group-item"
 					.col-md-8
-						= link_to "edit", edit_quiz_path(quiz), class: "btn btn-default"
-						= link_to "destroy", quiz_path(quiz), method: :delete, class: "btn btn-default"
+						= link_to "Edit", edit_quiz_path(quiz), class: "btn btn-default"
+						= link_to "Remove", quiz_path(quiz), method: :delete, class: "btn btn-default", data: { confirm: 'Are you sure?' }
 
 
 	

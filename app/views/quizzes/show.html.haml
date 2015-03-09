@@ -11,9 +11,9 @@
 			- @questions.each do |question|
 				.list-group-item
 					.row
-						.lead.col-md-10= "#{question.name}"
-						.col-md-1= link_to "Edit", edit_question_path(question)
-						.col-md-1= link_to "Destroy", question_path(question), method: :delete 
+						.lead.col-md-9= "#{question.name}"
+						.col-md-1= link_to "Edit", edit_question_path(question), class: "btn btn-default"
+						.col-md-offset-1= link_to "Remove", question_path(question), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-default"
 					- if question.image_file_name
 						.img-responsive= image_tag question.image.url(:medium)
 					- question.answers.each do |answer|
