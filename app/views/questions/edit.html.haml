@@ -21,42 +21,44 @@
               .col-md-offset-10= link_to "Back to Quiz", quiz_path(@quiz), class: "btn btn-default"
             .row
               .form
-                .form-group
+                .form-group.col-md-4
                   = form_for :question, url: question_path(question), method: :patch, html: { multipart: true } do |f|
-                    = f.label :image
-                    .col-md-4= f.file_field :image
+                    = f.label :image, class: "sr-only"
+                    = f.file_field :image
                     = f.submit "Upload", class: "btn-xs btn-default"
-            - @answers.each do |answer|
-              .row  
-                .form
-                  .form-group.form-group-sm
-                    = form_for answer, url: answer_path(answer), method: :patch do |f|
-                      = f.label :name, class: "sr-only"
-                      .textarea.col-md-4= f.text_area :name, rows: "1", class: "form-control list-group-item"
-                      .checkbox
-                        %label.col-md-2
-                          = f.label :correct, class: "sr-only"
-                          = f.check_box :correct
-                          = f.submit "Update", class: "btn"
-                .col-md-1= link_to "Remove", answer_path(answer), method: :delete, class: "btn btn-default", data: { confirm: 'Are you sure?' }
-              .row
-                .form
-                  .form-group
-                    = form_for answer, url: answer_path(answer), method: :patch, html: { multipart: true } do |f|
-                      = f.label :image  
-                      .col-md-4= f.file_field :image
-                      = f.submit "Upload", class: "btn-xs btn-default"
+            .row
+              .col-md-7
+                - @answers.each do |answer|
+                  .row  
+                    .form
+                      .form-group.form-group-sm
+                        = form_for answer, url: answer_path(answer), method: :patch do |f|
+                          = f.label :name, class: "sr-only"
+                          .textarea.col-md-7= f.text_area :name, rows: "1", class: "form-control list-group-item"
+                          .checkbox
+                            %label.col-md-2
+                              = f.label :correct, class: "sr-only"
+                              = f.check_box :correct
+                              = f.submit "Update", class: "btn"
+                    .col-md-1= link_to "Remove", answer_path(answer), method: :delete, class: "btn btn-default", data: { confirm: 'Are you sure?' }
+                  .row
+                    .form
+                      .form-group.col-md-7
+                        = form_for answer, url: answer_path(answer), method: :patch, html: { multipart: true } do |f|
+                          = f.label :image, class: "sr-only" 
+                          = f.file_field :image
+                          = f.submit "Upload", class: "btn-xs btn-default"
 
-            = form_for :answer, url: question_answers_path(question) do |f|
-              .row
-                .form
-                  .form-group.form-group-sm
-                    .checkbox
-                      %label
-                        =f.check_box :correct
-                      = f.label :name, class: "sr-only"
-                      .textarea.col-md-4= f.text_area :name, rows: "1", class: "form-control list-group-item"
-                      = f.submit "Add answer", class: "btn"
+                = form_for :answer, url: question_answers_path(question) do |f|
+                  .row
+                    .form
+                      .form-group.form-group-sm
+                        .checkbox
+                          %label
+                          = f.check_box :correct
+                          = f.label :name, class: "sr-only"
+                          .textarea.col-md-7= f.text_area :name, rows: "1", class: "form-control list-group-item"
+                          = f.submit "Add answer", class: "btn btn-primary"
         - else
           .list-group-item
             .row
