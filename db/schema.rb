@@ -57,7 +57,6 @@ ActiveRecord::Schema.define(version: 20150305145428) do
   create_table "questions", force: :cascade do |t|
     t.text     "name"
     t.integer  "quiz_id"
-    t.integer  "group_id"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
     t.string   "image_file_name"
@@ -66,7 +65,6 @@ ActiveRecord::Schema.define(version: 20150305145428) do
     t.datetime "image_updated_at"
   end
 
-  add_index "questions", ["group_id"], name: "index_questions_on_group_id"
   add_index "questions", ["quiz_id"], name: "index_questions_on_quiz_id"
 
   create_table "quizzes", force: :cascade do |t|

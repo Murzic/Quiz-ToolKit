@@ -60,6 +60,7 @@
                           .textarea.col-md-7= f.text_area :name, rows: "1", class: "form-control list-group-item"
                           = f.submit "Add answer", class: "btn btn-primary"
               .col-md-5
+                %h= @question_params
                 - @groups.each do |group|
                   .label.label-success
                     = group.name
