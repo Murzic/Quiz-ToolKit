@@ -60,11 +60,10 @@
                           .textarea.col-md-7= f.text_area :name, rows: "1", class: "form-control list-group-item"
                           = f.submit "Add answer", class: "btn btn-primary"
               .col-md-5
-                %h= @question_params
                 - @groups.each do |group|
                   .label.label-success
                     = group.name
-                    = link_to '', group_path(group), method: :destroy, class: "glyphicon glyphicon-remove" 
+                    = link_to '', group_path(group, question_id: question), method: :delete, class: "glyphicon glyphicon-remove" 
 
                 = form_for :group, url: question_groups_path(question) do |f|
                   .row
