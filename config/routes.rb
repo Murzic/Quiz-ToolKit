@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   devise_for :users
 
   resources :users, only: 'index', shallow: true do
@@ -14,6 +15,10 @@ Rails.application.routes.draw do
   resources :questions, only: '/', shallow: true do
     resources :answers
     resources :groups
+  end
+
+  resources :student_groups, shallow: true do
+    resources :student
   end
 
   

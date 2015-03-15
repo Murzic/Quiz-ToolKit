@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150305145428) do
+ActiveRecord::Schema.define(version: 20150315113839) do
 
   create_table "answers", force: :cascade do |t|
     t.text     "name"
@@ -36,6 +36,14 @@ ActiveRecord::Schema.define(version: 20150305145428) do
   end
 
   add_index "courses", ["user_id"], name: "index_courses_on_user_id"
+
+  create_table "courses_student_groups", id: false, force: :cascade do |t|
+    t.integer "course_id"
+    t.integer "student_group_id"
+  end
+
+  add_index "courses_student_groups", ["course_id"], name: "index_courses_student_groups_on_course_id"
+  add_index "courses_student_groups", ["student_group_id"], name: "index_courses_student_groups_on_student_group_id"
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"
@@ -75,6 +83,22 @@ ActiveRecord::Schema.define(version: 20150305145428) do
   end
 
   add_index "quizzes", ["course_id"], name: "index_quizzes_on_course_id"
+
+  create_table "student_groups", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "students", force: :cascade do |t|
+    t.string   "name"
+    t.string   "surname"
+    t.integer  "student_group_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "students", ["student_group_id"], name: "index_students_on_student_group_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
