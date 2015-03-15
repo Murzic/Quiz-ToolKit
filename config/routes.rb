@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   end
 
   resources :student_groups, shallow: true do
-    resources :student
+    resources :students
   end
 
   

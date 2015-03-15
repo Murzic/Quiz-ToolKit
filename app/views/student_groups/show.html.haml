@@ -1,0 +1,31 @@
+
+.panel.panel-default.col-md-offset-3.col-md-6
+  %ul.nav.nav-tabs    
+    %li= link_to "Courses", user_courses_path(current_user)
+    %li.active= link_to "Student Groups"
+  %ol.breadcrumb
+    %li= link_to "Student Groups", student_groups_path
+    %li.active= @student_group.name
+
+  .panel-body
+    = form_for :student, url: student_group_students_path(@student_group) do |f|
+      .row
+        .form-inline
+          .form-group
+            = f.label :name, class: "sr-only"
+            = f.text_field :name, class: "form-control", placeholder: "Name"
+          .form-group
+            = f.label :surname, class: "sr-only"
+            = f.text_field :surname, class: "form-control", placeholder: "Surname"
+          = f.submit "Add student", class: "btn btn-primary"
+    %table.table.table-hover
+      %tr
+        %th #
+        %th Name
+        %th Surname
+      - @students.each do |student|
+        %tr
+          %td= student.id
+          %td= student.name
+          %td= student.surname
+          %td= link_to "Remove", student_path(student), method: :delete, data: {confirm: "Are you sure?"}

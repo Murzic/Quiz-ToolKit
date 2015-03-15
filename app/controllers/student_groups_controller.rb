@@ -10,6 +10,8 @@ class StudentGroupsController < ApplicationController
   end
 
   def show
+    @student_group = StudentGroup.find(params[:id])
+    @students = @student_group.students.all
   end
 
   def update

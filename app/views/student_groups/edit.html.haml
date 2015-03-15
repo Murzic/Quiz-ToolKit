@@ -2,6 +2,8 @@
   %ul.nav.nav-tabs    
     %li= link_to "Courses", user_courses_path(current_user)
     %li.active= link_to "Student Groups"
+  %ol.breadcrumb
+    %li.active Student Groups
   .panel-body
     = form_for :student_group, url: student_groups_path do |f|
       .row
