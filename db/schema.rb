@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150315113839) do
+ActiveRecord::Schema.define(version: 20150323150247) do
 
   create_table "answers", force: :cascade do |t|
     t.text     "name"
@@ -27,6 +27,18 @@ ActiveRecord::Schema.define(version: 20150315113839) do
   end
 
   add_index "answers", ["question_id"], name: "index_answers_on_question_id"
+
+  create_table "copies", force: :cascade do |t|
+    t.text     "questions"
+    t.text     "answers"
+    t.integer  "student_id"
+    t.integer  "student_group_id"
+    t.integer  "generated_quiz_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "copies", ["generated_quiz_id"], name: "index_copies_on_generated_quiz_id"
 
   create_table "courses", force: :cascade do |t|
     t.string   "name"
@@ -44,6 +56,16 @@ ActiveRecord::Schema.define(version: 20150315113839) do
 
   add_index "courses_student_groups", ["course_id"], name: "index_courses_student_groups_on_course_id"
   add_index "courses_student_groups", ["student_group_id"], name: "index_courses_student_groups_on_student_group_id"
+
+  create_table "generated_quizzes", force: :cascade do |t|
+    t.integer  "course_id"
+    t.integer  "quiz_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "generated_quizzes", ["user_id"], name: "index_generated_quizzes_on_user_id"
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"

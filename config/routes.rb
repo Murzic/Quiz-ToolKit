@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+
+
   devise_for :users
 
   resources :users, only: 'index', shallow: true do
@@ -21,6 +23,7 @@ Rails.application.routes.draw do
     resources :students
   end
 
+  resources :generated_quizzes, only: 'create'
   
   # root 'main#index'
   root 'courses#index'

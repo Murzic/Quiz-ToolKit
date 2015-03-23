@@ -47,4 +47,4 @@
         %h4.modal-title Generate Quiz
       .modal-body
       .modal-footer
-        %button.btn.btn-primary Generate
+        .btn.btn-primary= link_to "Generate", generated_quizzes_path(generated_quiz: {quiz_id: @quiz.id, course_id: @course.id}), method: :create
