@@ -19,7 +19,15 @@
             .col-md-offset-1= link_to "Remove", question_path(question), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-default"
           - if question.image_file_name
             .img-responsive= image_tag question.image.url(:medium)
-          - question.answers.each do |answer|
-            = answer.name 
-            - if answer.image_file_name
-              .img-responsive= image_tag answer.image.url(:medium)
+          %ul.list-group
+            - question.answers.each do |answer|
+              - if answer.correct
+                %li.list-group-item.list-group-item-success
+                  = answer.name 
+                  - if answer.image_file_name
+                    .img-responsive= image_tag answer.image.url(:medium)
+              - else
+                .list-group-item
+                  = answer.name 
+                  - if answer.image_file_name
+                    .img-responsive= image_tag answer.image.url(:medium)

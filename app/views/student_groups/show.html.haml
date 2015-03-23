@@ -18,14 +18,15 @@
             = f.label :surname, class: "sr-only"
             = f.text_field :surname, class: "form-control", placeholder: "Surname"
           = f.submit "Add student", class: "btn btn-primary"
-    %table.table.table-hover
-      %tr
-        %th #
-        %th Name
-        %th Surname
-      - @students.each do |student|
+    - if @students.exists?
+      %table.table.table-hover
         %tr
-          %td= student.id
-          %td= student.name
-          %td= student.surname
-          %td= link_to "Remove", student_path(student), method: :delete, data: {confirm: "Are you sure?"}
+          %th #
+          %th Name
+          %th Surname
+        - @students.each do |student|
+          %tr
+            %td= student.id
+            %td= student.name
+            %td= student.surname
+            %td= link_to "Remove", student_path(student), method: :delete, data: {confirm: "Are you sure?"}
