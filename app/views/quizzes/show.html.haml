@@ -7,8 +7,15 @@
     %li= link_to "Courses", user_courses_path(current_user)
     %li= link_to @course.name, course_path(@course)
     %li.active= @quiz.name
-    
-  = link_to "New question", new_quiz_question_path(@quiz), class: "btn btn-default"
+  
+
+  .col-md-6
+    = link_to "New question", new_quiz_question_path(@quiz), class: "btn btn-default"
+  .col-md-6
+    %button.btn.btn-primary.pull-right{"data-toggle": "modal", "data-target": "#generateModal"} Generate quiz 
+
+  .row
+
   .panel-body
     .list-group
       - @questions.each do |question|
@@ -31,3 +38,13 @@
                   = answer.name 
                   - if answer.image_file_name
                     .img-responsive= image_tag answer.image.url(:medium)
+
+.modal{id: "generateModal"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.glyphicon.glyphicon-remove.close{"data-dismiss": "modal", "aria-label": "Close"}
+        %h4.modal-title Generate Quiz
+      .modal-body
+      .modal-footer
+        %button.btn.btn-primary Generate

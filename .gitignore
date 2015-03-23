@@ -18,3 +18,4 @@
 
 # Ignore the uploaded images
 /public/system/
+*.png
