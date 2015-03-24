@@ -46,5 +46,11 @@
         %button.glyphicon.glyphicon-remove.close{"data-dismiss": "modal", "aria-label": "Close"}
         %h4.modal-title Generate Quiz
       .modal-body
+        = form_for :generated_quiz, url: generated_quizzes_path, method: :create do |f|
+          = f.hidden_field :quiz_id, value: @quiz.id
+          = f.hidden_field :course_id, value: @course.id
+          = f.label :nr_of_copies
+          = f.text_field :nr_of_copies
+          = f.submit "Generate"
       .modal-footer
-        .btn.btn-primary= link_to "Generate", generated_quizzes_path(generated_quiz: {quiz_id: @quiz.id, course_id: @course.id}), method: :create
+        / # = link_to "Generate", generated_quizzes_path(generated_quiz: {quiz_id: @quiz.id, course_id: @course.id}), method: :create, class: "btn btn-primary"

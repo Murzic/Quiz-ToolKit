@@ -10,8 +10,9 @@ class GeneratedQuizzesController < ApplicationController
     redirect_to :back
   end
 
+
   private
   def generated_quiz_params
-    params.require(:generated_quiz).permit(:course_id, :quiz_id)
+    params.require(:generated_quiz).permit(:course_id, :quiz_id, :nr_of_copies)
   end
 end
