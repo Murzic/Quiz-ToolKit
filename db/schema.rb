@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 20150323150247) do
     t.text     "answers"
     t.integer  "student_id"
     t.integer  "student_group_id"
+    t.integer  "samples_nr"
     t.integer  "generated_quiz_id"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
@@ -60,10 +61,15 @@ ActiveRecord::Schema.define(version: 20150323150247) do
   create_table "generated_quizzes", force: :cascade do |t|
     t.integer  "course_id"
     t.integer  "quiz_id"
-    t.integer  "nr_of_copies"
+    t.integer  "copies_nr"
+    t.boolean  "random_opt"
+    t.text     "student_group_ids"
+    t.integer  "questions_nr"
+    t.integer  "versions_nr"
+    t.text     "question_groups_nrs"
     t.integer  "user_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
 
   add_index "generated_quizzes", ["user_id"], name: "index_generated_quizzes_on_user_id"
