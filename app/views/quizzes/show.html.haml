@@ -39,18 +39,20 @@
                   - if answer.image_file_name
                     .img-responsive= image_tag answer.image.url(:medium)
 
-.modal.fade{id: "generateModal"}
+.modal.fade{id: "generateModal", role: "dialog", "aria-hidden": "true"}
   .modal-dialog
     .modal-content
       .modal-header
         %button.glyphicon.glyphicon-remove.close{"data-dismiss": "modal", "aria-label": "Close"}
         %h4.modal-title Generate Quiz
       .modal-body
-        = form_for :generated_quiz, url: generated_quizzes_path, method: :create do |f|
-          = f.hidden_field :quiz_id, value: @quiz.id
-          = f.hidden_field :course_id, value: @course.id
-          = f.label :nr_of_copies
-          = f.text_field :nr_of_copies
-          = f.submit "Generate"
+        .form
+          = form_for :generated_quiz, url: generated_quizzes_path, method: :create do |f|
+            = f.hidden_field :quiz_id, value: @quiz.id
+            = f.hidden_field :course_id, value: @course.id
+            .form-group
+              = f.label :nr_of_copies, class: "control-label"
+              = f.number_field :nr_of_copies, min: 0, max: 99, class: "form-control", type: "number", autofocus: true
+            = f.submit "Generate", class: "btn btn-primary"
       .modal-footer
         / # = link_to "Generate", generated_quizzes_path(generated_quiz: {quiz_id: @quiz.id, course_id: @course.id}), method: :create, class: "btn btn-primary"

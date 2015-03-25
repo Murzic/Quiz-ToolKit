@@ -2,9 +2,15 @@
 @import "bootstrap-sprockets"
 @import "bootstrap"
 
+// Fixes the distance between labels when there a bunch of them
 .label
   display: inline-block
   padding: .2em .6em .3em
   font-size: 75%
   font-weight: bold
 
+// Fixes the background scrolling when opening a modal 
+body.modal-open
+  overflow: hidden
+  position: fixed
+  width: 100%
