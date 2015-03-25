@@ -51,8 +51,30 @@
             = f.hidden_field :quiz_id, value: @quiz.id
             = f.hidden_field :course_id, value: @course.id
             .form-group
-              = f.label :nr_of_copies, class: "control-label"
-              = f.number_field :nr_of_copies, min: 0, max: 99, class: "form-control", type: "number", autofocus: true
+              Number of copies
+              = f.label :copies_nr, class: "sr-only"
+              = f.number_field :copies_nr, min: 0, max: 99, class: "form-control", type: "number", autofocus: true
+            .form-group                
+              .checkbox
+                %label
+                  = f.label :random_opt, class: "sr-only"
+                  = f.check_box :random_opt, class: "checkbox"
+                  Random
+            .form-group
+              Student Groups:
+              = f.label :student_group_ids, class: "sr-only" 
+              = f.select :student_group_ids, @student_groups, {include_blank: 'None', include_hidden: false}, {multiple: true, class: "form-control"}
+            .form-group
+              Number of questions
+              = f.label :questions_nr, class: "sr-only"
+              = f.number_field :questions_nr, class: "form-control"
+            .form-group
+              Number of versions
+              = f.label :versions_nr, class: "sr-only"
+              = f.number_field :versions_nr, class: "form-control"
+          
+
+
             = f.submit "Generate", class: "btn btn-primary"
       .modal-footer
         / # = link_to "Generate", generated_quizzes_path(generated_quiz: {quiz_id: @quiz.id, course_id: @course.id}), method: :create, class: "btn btn-primary"
