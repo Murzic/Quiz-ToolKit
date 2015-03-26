@@ -9,6 +9,7 @@ class QuizzesController < ApplicationController
 		@quiz = Quiz.find(params[:id])
 		@questions = @quiz.questions.all
 		@course = @quiz.course
+		@groups = @quiz.groups.all
 		@student_groups = StudentGroup.all.collect { |sg| [sg.name, sg.id] }
 	end
 

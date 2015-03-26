@@ -72,7 +72,12 @@
               Number of versions
               = f.label :versions_nr, class: "sr-only"
               = f.number_field :versions_nr, class: "form-control"
-          
+            .form-group
+              - @groups.each do |g|
+                .input-group
+                  .input-group-addon= g.name
+                  = f.label :question_groups_nrs, class: "sr-only"
+                  = f.number_field "question_groups_nrs[#{g.id}]" , class: "form-control"
 
 
             = f.submit "Generate", class: "btn btn-primary"
