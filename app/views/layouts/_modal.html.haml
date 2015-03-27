@@ -1,0 +1,43 @@
+.modal.fade{id: "generateModal", role: "dialog", "aria-hidden": "true"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.glyphicon.glyphicon-remove.close{"data-dismiss": "modal", "aria-label": "Close"}
+        %h4.modal-title Generate Quiz
+      .modal-body
+        .form
+          = form_for :generated_quiz, url: generated_quizzes_path, method: :create do |f|
+            = f.hidden_field :quiz_id, value: @quiz.id
+            = f.hidden_field :course_id, value: @course.id
+            .form-group
+              Number of copies
+              = f.label :copies_nr, class: "sr-only"
+              = f.number_field :copies_nr, min: 0, max: 99, class: "form-control", type: "number", autofocus: true
+            .form-group       
+              .checkbox
+                %label
+                  = f.label :random_opt, class: "sr-only"
+                  = f.check_box :random_opt, class: "checkbox"
+                  Random
+            .form-group
+              Student Groups:
+              = f.label :student_group_ids, class: "sr-only" 
+              = f.select :student_group_ids, @student_groups, {include_blank: 'None', include_hidden: false}, {multiple: true, class: "form-control"}
+            .form-group
+              Number of questions
+              = f.label :questions_nr, class: "sr-only"
+              = f.number_field :questions_nr, min: 0, class: "form-control"
+            .form-group
+              Number of versions
+              = f.label :versions_nr, class: "sr-only"
+              = f.number_field :versions_nr, min: 0, class: "form-control"
+            .form-group
+              - @groups.each do |g|
+                .input-group
+                  .input-group-addon= g.name
+                  = f.label :question_groups_nrs, class: "sr-only"
+                  = f.number_field "question_groups_nrs[#{g.id}]", min: 0, class: "form-control"
+            .form-group
+              = f.submit "Generate", class: "btn btn-primary"
+      .modal-footer
+        / # = link_to "Generate", generated_quizzes_path(generated_quiz: {quiz_id: @quiz.id, course_id: @course.id}), method: :create, class: "btn btn-primary"s
