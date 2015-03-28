@@ -2,8 +2,15 @@ module GeneratedQuizzesHelper
   def self.gen_copies(genquiz)
     @attributes = genquiz.attributes.except("created_at", "updated_at")
     questions = Quiz.find(@attributes["quiz_id"]).question_ids
+
     if @attributes["copies_nr"]
-      genquiz.copies.create(questions: questions, samples_nr: @attributes["copies_nr"])
+      if @attributes["random_opt"]
+        @attributes["copies_nr"].times do
+          genquiz.copies.create(questions: questions.shuffle, samples_nr: 1)
+        end
+      else
+        genquiz.copies.create(questions: questions, samples_nr: @attributes["copies_nr"])
+      end
     end
   end
 end
