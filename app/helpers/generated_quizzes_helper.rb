@@ -18,16 +18,20 @@ module GeneratedQuizzesHelper
         @attributes["versions_nr"].times do
           questions_arr << questions.shuffle.first(ques_nr)
         end        
-        (0..@attributes["copies_nr"]).each do |i|
-          genquiz.copies.create(questions: questions_arr[i%4], samples_nr: 1)
+        ActiveRecord::Base.transaction do
+          (0..@attributes["copies_nr"]).each do |i|
+            genquiz.copies.create(questions: questions_arr[i%4], samples_nr: 1)
+          end
         end
         return
       end
 
       #### Random_option given
       if @attributes["random_opt"]
-        @attributes["copies_nr"].times do
-          genquiz.copies.create(questions: questions.shuffle.first(ques_nr), samples_nr: 1)
+        ActiveRecord::Base.transaction do
+          @attributes["copies_nr"].times do
+            genquiz.copies.create(questions: questions.shuffle.first(ques_nr), samples_nr: 1)
+          end
         end
       else
         genquiz.copies.create(questions: questions.first(ques_nr), samples_nr: @attributes["copies_nr"])
