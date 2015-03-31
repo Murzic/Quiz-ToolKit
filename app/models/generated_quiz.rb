@@ -5,9 +5,11 @@ class GeneratedQuiz < ActiveRecord::Base
   belongs_to :user
   has_many :copies
 
-  before_save :remove_hash_pairs, on: :create
+  before_create :remove_hash_pairs, on: :create
 
   private
+  ### The fields_for in the modal's form will pass key/value pairs even if the value isn't specified
+  ### The method removes the passed hash's pairs if they don't have a value       
   def remove_hash_pairs
     self.question_groups_nrs.delete_if do |key, value|
       value.empty?
