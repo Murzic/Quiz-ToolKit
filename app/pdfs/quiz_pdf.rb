@@ -25,7 +25,12 @@ class QuizPdf < Prawn::Document
 
   def set_questions(copy)
     questions = @questions.find(copy.questions)
-    questions.each do |question|
+    questions_ordered = copy.questions.map do |id| 
+      questions.detect do |each|
+        each.id == id
+      end
+    end
+    questions_ordered.each do |question|
       text "#{question.name}"
       question.answers.each do |answer|
         text "#{answer.name}"
