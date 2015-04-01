@@ -6,7 +6,7 @@ class GeneratedQuizzesController < ApplicationController
     GeneratedQuizzesHelper.gen_copies(@generated_quiz)
 
     # Generate pdf document
-    pdf = Prawn::Document.new
+    pdf = QuizPdf.new(@generated_quiz)
     send_data pdf.render, filename: 'report.pdf', type: 'application/pdf'
   
 

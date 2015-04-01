@@ -23,7 +23,7 @@ Rails.application.routes.draw do
     resources :students
   end
 
-  resources :generated_quizzes, only: ['create', 'index']
+  resources :generated_quizzes, only: 'create'
   
   # root 'main#index'
   root 'courses#index'
