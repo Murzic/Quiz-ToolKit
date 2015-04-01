@@ -4,9 +4,14 @@ class GeneratedQuizzesController < ApplicationController
     @generated_quiz = @user.generated_quizzes.new(generated_quiz_params)
     @generated_quiz.save
     GeneratedQuizzesHelper.gen_copies(@generated_quiz)
-    redirect_to :back
-  end
 
+    # Generate pdf document
+    pdf = Prawn::Document.new
+    send_data pdf.render, filename: 'report.pdf', type: 'application/pdf'
+  
+
+    # redirect_to :back
+  end
 
   private
   def generated_quiz_params

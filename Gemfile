@@ -21,6 +21,8 @@ gem 'therubyracer', platforms: :ruby
 gem 'haml'
 # Paperclip for managing uploading images
 gem 'paperclip'
+# Generates pdf files
+gem 'prawn'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
