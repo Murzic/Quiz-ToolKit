@@ -38,7 +38,7 @@ class QuestionsController < ApplicationController
 		@question = Question.find(params[:id])
 		@quiz = @question.quiz
 		@question.destroy
-		redirect_to quiz_path(@quiz)
+		redirect_to :back
 	end
 
 	private
