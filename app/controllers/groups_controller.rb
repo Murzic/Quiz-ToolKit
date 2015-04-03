@@ -14,11 +14,15 @@ class GroupsController < ApplicationController
 
   def destroy
     @question = Question.find(params[:question_id])
+    @quiz = @question.quiz
     @group = Group.find(params[:id])
     @question.groups.destroy(@group)
+    if @group.questions.count.zero?
+      @quiz.groups.destroy(@group)
+    end
     redirect_to edit_question_path(@question) 
   end
-
+  
 
   private
 
