@@ -4,10 +4,14 @@ class GroupsController < ApplicationController
     @quiz = @question.quiz
     @quiz_groups = @quiz.groups
     if @quiz_groups.exists?(group_params)
-      @question.groups << @quiz_groups.where(group_params)
+      if !@question.groups.exists?(group_params)
+        @question.groups << @quiz_groups.where(group_params)
+      end
     else
-      @quiz_groups.create(group_params)
-      @question.groups << @quiz_groups.where(group_params)
+      ActiveRecord::Base.transaction do
+        @quiz_groups.create(group_params)
+        @question.groups << @quiz_groups.where(group_params)
+      end
     end
     redirect_to edit_question_path(@question) 
   end
@@ -16,9 +20,11 @@ class GroupsController < ApplicationController
     @question = Question.find(params[:question_id])
     @quiz = @question.quiz
     @group = Group.find(params[:id])
-    @question.groups.destroy(@group)
-    if @group.questions.count.zero?
-      @quiz.groups.destroy(@group)
+    ActiveRecord::Base.transaction do
+      @question.groups.destroy(@group)
+      if @group.questions.count.zero?
+        @quiz.groups.destroy(@group)
+      end
     end
     redirect_to edit_question_path(@question) 
   end

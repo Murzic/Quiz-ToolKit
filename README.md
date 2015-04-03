@@ -7,7 +7,7 @@
 
 * Clone the repository
 
-* CD into the cloned repository and Run `bundle install` and `rake db:migrate`
+* CD into the cloned repository and Run `bundle install`, then `rake db:migrate` and `rake db:seed`
 
 * Then run the server with `rails s` 
 
