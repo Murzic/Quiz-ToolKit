@@ -9,11 +9,14 @@
   .panel-body
     = form_for :course, url: user_courses_path(current_user) do |f|
       - if @course.errors.any?
-        = pluralize(@course.errors.count, "error")
-        Prohibited this course from being saved:
-        %ul
-          - @course.errors.full_messages.each do |msg|
-            %li= msg
+        .alert.alert-danger.alert-dismissible
+          %button.close{"data-dismiss": "alert", "aria-label": "Close"} &times;
+          .glyphicon.glyphicon-exclamation-sign
+          %strong= pluralize(@course.errors.count, "error")
+          %strong prohibited this course from being saved:
+          %ul
+            - @course.errors.full_messages.each do |msg|
+              %li= msg
       .row
         .form
           .form-group.col-md-4
