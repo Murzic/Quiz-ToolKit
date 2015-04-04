@@ -3,6 +3,7 @@ class CoursesController < ApplicationController
 	def index
 		@user = current_user
 		@courses = @user.courses.all
+		@course = Course.new
 	end
 
 	def new
@@ -13,8 +14,12 @@ class CoursesController < ApplicationController
 	def create
 		@user = current_user
 		@course = @user.courses.new(course_params)
-		@course.save
-		redirect_to user_courses_path	
+		if @course.save
+			redirect_to user_courses_path
+		else
+			@courses = @user.courses.all
+			render :index
+		end
 	end
 
 	def edit
@@ -35,6 +40,7 @@ class CoursesController < ApplicationController
 		if @course.update(course_params)
 			redirect_to user_courses_path(@user)
 		else
+			@courses = @user.courses.all
 			render 'edit'
 		end
 	end

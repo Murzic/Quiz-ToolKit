@@ -5,6 +5,12 @@
     %li= link_to "Student Groups", student_groups_path
   .panel-body
     = form_for :course, url: user_courses_path(current_user) do |f|
+      - if @course.errors.any?
+        = pluralize(@course.errors.count, "error")
+        Prohibited this course from being saved:
+        %ul
+          - @course.errors.full_messages.each do |msg|
+            %li= msg
       .row
         .form
           .form-group.col-md-4
