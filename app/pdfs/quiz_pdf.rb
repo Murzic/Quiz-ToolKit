@@ -9,6 +9,7 @@ class QuizPdf < Prawn::Document
 
   def quiz_questions
     @genquiz.copies.each do |copy|
+      # stroke_axis
       set_header(copy)
       set_questions(copy)   
       start_new_page
@@ -16,11 +17,16 @@ class QuizPdf < Prawn::Document
   end
 
   def set_header(copy)
-    student_group = StudentGroup.find(copy.student_group_id)
-    student = Student.find(copy.student_id)
-    text "#{@quiz.name}"
-    text "#{student_group.name}"
-    text "#{student.name} #{student.surname}" 
+    if copy.student_group_id
+      student_group = StudentGroup.find(copy.student_group_id)
+      student = Student.find(copy.student_id)
+    end
+    if copy.student_group_id
+      text "#{student.name} #{student.surname}", align: :right, size: 12
+      text "#{student_group.name}", align: :right, size: 12
+    end
+    text "#{@quiz.name}", align: :center, size: 16
+    move_down 20
   end
 
   def set_questions(copy)
@@ -30,10 +36,23 @@ class QuizPdf < Prawn::Document
         each.id == id
       end
     end
+    i = 0
     questions_ordered.each do |question|
-      text "#{question.name}"
-      question.answers.each do |answer|
-        text "#{answer.name}"
+      if cursor < 100 
+        start_new_page
+      end
+      if cursor == 720
+        set_header(copy)
+      end
+      span(500, position: :center) do
+        range = ('a'..'z').to_a.reverse
+        text "#{i+=1}. #{question.name}", inline_format: true
+        question.answers.each do |answer|
+          indent(10) do
+            text "#{range.pop}) #{answer.name}", inline_format: true
+          end
+        end
+        # transparent(0.5) { stroke_bounds }
       end
     end
   end

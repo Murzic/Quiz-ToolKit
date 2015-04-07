@@ -7,7 +7,7 @@ class GeneratedQuizzesController < ApplicationController
 
     # Generate pdf document
     pdf = QuizPdf.new(@generated_quiz)
-    send_data pdf.render, filename: 'report.pdf', type: 'application/pdf'
+    send_data pdf.render, filename: 'report.pdf', type: 'application/pdf', disposition: 'inline'
   
 
     # redirect_to :back
