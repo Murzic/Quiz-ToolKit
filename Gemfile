@@ -23,6 +23,8 @@ gem 'haml'
 gem 'paperclip'
 # Generates pdf files
 gem 'prawn'
+# Generate qr codes
+gem 'rqrcode_png'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

@@ -1,3 +1,4 @@
+
 class QuizPdf < Prawn::Document
   def initialize(genquiz)
     super()
@@ -25,6 +26,9 @@ class QuizPdf < Prawn::Document
       text "#{student.name} #{student.surname}", align: :right, size: 12
       text "#{student_group.name}", align: :right, size: 12
     end
+    qr = RQRCode::QRCode.new("#{copy.id}", size: 1, level: :h).to_img
+    qr.resize(50, 50).save("app/pdfs/qrcodes/#{copy.id}.png")
+    image "app/pdfs/qrcodes/#{copy.id}.png", at: [-25, 735]
     text "#{@quiz.name}", align: :center, size: 16
     move_down 20
   end
