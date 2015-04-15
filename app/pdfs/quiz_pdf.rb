@@ -11,24 +11,22 @@ class QuizPdf < Prawn::Document
   def quiz_questions
     @genquiz.copies.each do |copy|
       # stroke_axis
-      set_header(copy)
+      qr = RQRCode::QRCode.new("#{copy.id}", size: 1, level: :h).to_img
+      qr.resize(50, 50).save("app/pdfs/qrcodes/#{copy.id}.png")
+      set_header(copy, true)
       set_questions(copy)   
       start_new_page
     end
   end
 
-  def set_header(copy)
+  def set_header(copy, *opt)
     if copy.student_group_id
       student_group = StudentGroup.find(copy.student_group_id)
       student = Student.find(copy.student_id)
-    end
-    if copy.student_group_id
       text "#{student.name} #{student.surname}", align: :right, size: 12
       text "#{student_group.name}", align: :right, size: 12
     end
-    qr = RQRCode::QRCode.new("#{copy.id}", size: 1, level: :h).to_img
-    qr.resize(50, 50).save("app/pdfs/qrcodes/#{copy.id}.png")
-    image "app/pdfs/qrcodes/#{copy.id}.png", at: [-25, 735]
+    image "app/pdfs/qrcodes/#{copy.id}.png", at: [-25, 735] if opt
     text "#{@quiz.name}", align: :center, size: 16
     move_down 20
   end

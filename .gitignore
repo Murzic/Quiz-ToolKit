@@ -19,3 +19,5 @@
 # Ignore the uploaded images
 /public/system/
 *.png
+*.jpg
+/app/pdfs/qrcodes/
