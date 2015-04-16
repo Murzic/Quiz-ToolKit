@@ -13,20 +13,20 @@ class QuizPdf < Prawn::Document
       # stroke_axis
       qr = RQRCode::QRCode.new("#{copy.id}", size: 1, level: :h).to_img
       qr.resize(50, 50).save("app/pdfs/qrcodes/#{copy.id}.png")
-      set_header(copy, true)
+      set_header(copy)
       set_questions(copy)   
       start_new_page
     end
   end
 
-  def set_header(copy, *opt)
+  def set_header(copy)
     if copy.student_group_id
       student_group = StudentGroup.find(copy.student_group_id)
       student = Student.find(copy.student_id)
       text "#{student.name} #{student.surname}", align: :right, size: 12
       text "#{student_group.name}", align: :right, size: 12
     end
-    image "app/pdfs/qrcodes/#{copy.id}.png", at: [-25, 735] if opt
+    image "app/pdfs/qrcodes/#{copy.id}.png", at: [-25, 735]
     text "#{@quiz.name}", align: :center, size: 16
     move_down 20
   end
@@ -50,10 +50,11 @@ class QuizPdf < Prawn::Document
         range = ('a'..'z').to_a.reverse
         text "#{i+=1}. #{question.name}", inline_format: true
         question.answers.each do |answer|
-          indent(10) do
-            text "#{range.pop}) #{answer.name}", inline_format: true
+          indent(15) do
+            text "#{range.pop}. #{answer.name}", inline_format: true
           end
         end
+        move_down 5
         # transparent(0.5) { stroke_bounds }
       end
     end
