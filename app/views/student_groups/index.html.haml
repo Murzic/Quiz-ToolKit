@@ -2,6 +2,7 @@
   %ul.nav.nav-tabs    
     %li= link_to "Courses", user_courses_path(current_user)
     %li.active= link_to "Student Groups"
+    %li= link_to "Generated Quizzes", generated_quizzes_path
   .panel-body
     = form_for :student_group, url: student_groups_path do |f|
       .row

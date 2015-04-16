@@ -1,4 +1,10 @@
 class GeneratedQuizzesController < ApplicationController
+  def index
+    @user = current_user
+    @generated_quizzes = @user.generated_quizzes.all
+    @courses = @user.courses
+  end
+
   def create
     @user = current_user
     @generated_quiz = @user.generated_quizzes.new(generated_quiz_params)

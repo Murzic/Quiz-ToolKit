@@ -1,0 +1,22 @@
+.panel.panel-default.col-md-offset-3.col-md-6
+  %ul.nav.nav-tabs    
+    %li= link_to "Courses", user_courses_path(current_user)
+    %li= link_to "Student Groups", student_groups_path
+    %li.active= link_to "Generated Quizzes"
+  .panel-body
+    #accordion.panel-group
+      - @courses.each do |course|
+        .panel.panel-default
+          .panel-heading
+            %h4.panel-title
+              = link_to course.name, "#listGroup#{course.id}", class: "collapsed", 'data-parent': "#accordion", 'data-toggle': "collapse", "aria-expanded": "true", "aria-controls": "listGroup#{course.id}"
+          .panel-collapse.collapse{ "id": "listGroup#{course.id}", "aria-labelledby": "listGroup#{course.id}" }
+            .list-group
+              - course.quizzes.each do |quiz|
+                .list-group-item
+                  = quiz.name
+                  .list-group
+                    - @generated_quizzes.where("quiz_id": quiz.id).each do |generated_quiz|
+                      =link_to generated_quiz.created_at.getlocal, "", class: "list-group-item"
+                
+          

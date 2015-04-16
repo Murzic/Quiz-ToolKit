@@ -3,6 +3,7 @@
   %ul.nav.nav-tabs    
     %li= link_to "Courses", user_courses_path(current_user)
     %li.active= link_to "Student Groups"
+    %li= link_to "Generated Quizzes", generated_quizzes_path
   %ol.breadcrumb
     %li= link_to "Student Groups", student_groups_path
     %li.active= @student_group.name
