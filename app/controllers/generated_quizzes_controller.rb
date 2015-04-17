@@ -5,6 +5,11 @@ class GeneratedQuizzesController < ApplicationController
     @courses = @user.courses
   end
 
+  def show
+    @generated_quiz = GeneratedQuiz.find(params[:id])
+    @quiz = Quiz.find(@generated_quiz.quiz_id)
+  end
+
   def create
     @user = current_user
     @generated_quiz = @user.generated_quizzes.new(generated_quiz_params)

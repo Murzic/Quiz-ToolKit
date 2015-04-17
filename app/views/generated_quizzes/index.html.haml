@@ -17,6 +17,6 @@
                   = quiz.name
                   .list-group
                     - @generated_quizzes.where("quiz_id": quiz.id).each do |generated_quiz|
-                      =link_to generated_quiz.created_at.getlocal, "", class: "list-group-item"
+                      =link_to "Generated at #{generated_quiz.created_at.getlocal}", generated_quiz_path(generated_quiz), class: "list-group-item"
                 
           
