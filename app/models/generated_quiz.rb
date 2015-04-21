@@ -4,7 +4,6 @@ class GeneratedQuiz < ActiveRecord::Base
   
   belongs_to :user
   has_many :copies
-  has_many :scanned_quizzes, dependent: :destroy
 
   before_create :remove_hash_pairs, on: :create
 
