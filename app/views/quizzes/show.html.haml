@@ -1,6 +1,6 @@
 
 .panel.panel-default.col-md-offset-2.col-md-8
-  %ul.nav.nav-tabs    
+  %ul.nav.nav-tabs
     %li.active= link_to "Courses"
     %li= link_to "Student Groups", student_groups_path
     %li= link_to "Generated Quizzes", generated_quizzes_path
@@ -8,34 +8,34 @@
     %li= link_to "Courses", user_courses_path(current_user)
     %li= link_to @course.name, course_path(@course)
     %li.active= @quiz.name
-  
-  .col-md-6
-    = link_to "New question", new_quiz_question_path(@quiz), class: "btn btn-default"
-  .col-md-6
-    %button.btn.btn-primary.pull-right{"data-toggle": "modal", "data-target": "#generateModal"} Generate quiz 
 
   .row
-  
+    .col-xs-6
+      = link_to "New question", new_quiz_question_path(@quiz), class: "btn btn-default"
+    .col-xs-6
+      %button.btn.btn-primary.pull-right{"data-toggle": "modal", "data-target": "#generateModal"} Generate quiz
+
   .panel-body
     .list-group
       - @questions.each do |question|
         .list-group-item
           .row
-            .lead.col-md-9= "#{question.name}"
-            .col-md-1= link_to "Edit", edit_question_path(question), method: :get, class: "btn btn-default"
-            .col-md-offset-1= link_to "Remove", question_path(question), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-default"
+            .lead.col-sm-9.col-xs-6= "#{question.name}"
+            .col-sm-3.col-xs-6.text-right
+              = link_to "Edit", edit_question_path(question), method: :get, class: "btn btn-default"
+              = link_to "Remove", question_path(question), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-link"
           - if question.image_file_name
             .img-responsive= image_tag question.image.url(:medium)
           %ul.list-group
             - question.answers.each do |answer|
               - if answer.correct
                 %li.list-group-item.list-group-item-success
-                  = answer.name 
+                  = answer.name
                   - if answer.image_file_name
                     .img-responsive= image_tag answer.image.url(:medium)
               - else
                 .list-group-item
-                  = answer.name 
+                  = answer.name
                   - if answer.image_file_name
                     .img-responsive= image_tag answer.image.url(:medium)
 
