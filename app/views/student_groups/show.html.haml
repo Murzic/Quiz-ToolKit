@@ -8,17 +8,17 @@
     %li= link_to "Student Groups", student_groups_path
     %li.active= @student_group.name
 
+  = form_for :student, url: student_group_students_path(@student_group) do |f|
+    .row
+      .form-inline.col-xs-12
+        .form-group
+          = f.label :name, class: "sr-only"
+          = f.text_field :name, class: "form-control", placeholder: "Name"
+        .form-group
+          = f.label :surname, class: "sr-only"
+          = f.text_field :surname, class: "form-control", placeholder: "Surname"
+        = f.submit "Add student", class: "btn btn-primary"
   .panel-body
-    = form_for :student, url: student_group_students_path(@student_group) do |f|
-      .row
-        .form-inline
-          .form-group
-            = f.label :name, class: "sr-only"
-            = f.text_field :name, class: "form-control", placeholder: "Name"
-          .form-group
-            = f.label :surname, class: "sr-only"
-            = f.text_field :surname, class: "form-control", placeholder: "Surname"
-          = f.submit "Add student", class: "btn btn-primary"
     - if @students.exists?
       %table.table.table-hover
         %tr
