@@ -12,7 +12,7 @@ class QuizPdf < Prawn::Document
     @genquiz.copies.each do |copy|
       # stroke_axis
       qr = RQRCode::QRCode.new("#{copy.id}", size: 1, level: :h).to_img
-      qr.resize(50, 50).save("app/pdfs/qrcodes/#{copy.id}.png")
+      qr.resize(50, 50).save("#{Rails.root}/app/pdfs/qrcodes/#{copy.id}.png")
       set_header(copy)
       set_questions(copy)   
       start_new_page
