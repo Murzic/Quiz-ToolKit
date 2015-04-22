@@ -21,3 +21,4 @@
 *.png
 *.jpg
 /app/pdfs/qrcodes/
+!/app/pdfs/qrcodes/.gitkeep
