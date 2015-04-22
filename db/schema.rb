@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150323150247) do
+ActiveRecord::Schema.define(version: 20150421102942) do
 
   create_table "answers", force: :cascade do |t|
     t.text     "name"
@@ -112,6 +112,18 @@ ActiveRecord::Schema.define(version: 20150323150247) do
   end
 
   add_index "quizzes", ["course_id"], name: "index_quizzes_on_course_id"
+
+  create_table "scanned_quizzes", force: :cascade do |t|
+    t.integer  "user_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.string   "scan_file_name"
+    t.string   "scan_content_type"
+    t.integer  "scan_file_size"
+    t.datetime "scan_updated_at"
+  end
+
+  add_index "scanned_quizzes", ["user_id"], name: "index_scanned_quizzes_on_user_id"
 
   create_table "student_groups", force: :cascade do |t|
     t.string   "name"

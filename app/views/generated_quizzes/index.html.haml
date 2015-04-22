@@ -5,8 +5,6 @@
     %li.active= link_to "Generated Quizzes"
   %ul
   .col-md-12
-    .pull-right
-      =link_to "Upload images", "", class: "btn btn-primary"
   .row
   .panel-body
     #accordion.panel-group
@@ -14,15 +12,18 @@
         .panel.panel-default
           .panel-heading
             .panel-title= link_to course.name, "#panelGroup#{course.id}", class: "collapsed", 'data-parent': "#accordion", 'data-toggle': "collapse", "aria-expanded": "true", "aria-controls": "panelGroup#{course.id}"
+
           .panel-collapse.collapse{ "id": "panelGroup#{course.id}", "aria-labelledby": "panelGroup#{course.id}" }
-            #accordion2.panel-group
-              - course.quizzes.each do |quiz|
-                .panel.panel-info
-                  .panel-heading
-                    = link_to quiz.name, "#listGroup#{quiz.id}", class: "collapsed", 'data-parent': "#accordion2", 'data-toggle': "collapse", "aria-expanded": "true", "aria-controls": "listGroup#{quiz.id}"
-                .panel-collapse.collapse{ "id": "listGroup#{quiz.id}", "aria-labelledby": "listGroup#{quiz.id}" }
-                  .list-group
-                    - @generated_quizzes.where("quiz_id": quiz.id).each do |generated_quiz|
-                      = link_to "Generated at #{generated_quiz.created_at.getlocal}", generated_quiz_path(generated_quiz), class: "list-group-item"
+            .panel-body
+              #accordion2.panel-group
+                - course.quizzes.each do |quiz|
+                  .panel.panel-default
+                    .panel-heading
+                      .panel-title= link_to quiz.name, "#listGroup#{quiz.id}", class: "collapsed", 'data-parent': "#accordion2", 'data-toggle': "collapse", "aria-expanded": "true", "aria-controls": "listGroup#{quiz.id}"
+                    .panel-collapse.collapse{ "id": "listGroup#{quiz.id}", "aria-labelledby": "listGroup#{quiz.id}" }
+                      .list-group
+                        - @generated_quizzes.where("quiz_id": quiz.id).each do |generated_quiz|
+                          = link_to "Generated at #{generated_quiz.created_at.getlocal}", generated_quiz_path(generated_quiz), class: "list-group-item"
+
 
           

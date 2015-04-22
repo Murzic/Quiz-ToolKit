@@ -24,6 +24,8 @@ Rails.application.routes.draw do
   end
 
   resources :generated_quizzes, only: [:create, :index, :show]
+
+  post 'upload', to: 'users#upload', as: :upload 
   
   # root 'main#index'
   root 'courses#index'

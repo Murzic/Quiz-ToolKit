@@ -26,9 +26,9 @@
             .row
               .form
                 .form-group.col-md-4
-                  = form_for :question, url: question_path(question), method: :patch, html: { multipart: true } do |f|
+                  = form_for :question, url: question_path(question), method: :patch, html: { multipart: true} do |f|
                     = f.label :image, class: "sr-only"
-                    = f.file_field :image
+                    = f.file_field :image, multiple: true
                     = f.submit "Upload", class: "btn-xs btn-default"
             .row
               .col-md-7
