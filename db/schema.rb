@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20150421102942) do
   create_table "copies", force: :cascade do |t|
     t.text     "questions"
     t.text     "answers"
+    t.text     "squares_xy"
     t.integer  "student_id"
     t.integer  "student_group_id"
     t.integer  "samples_nr"

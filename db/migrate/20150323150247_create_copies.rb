@@ -3,6 +3,7 @@ class CreateCopies < ActiveRecord::Migration
     create_table :copies do |t|
       t.text :questions # Hash
       t.text :answers # Hash
+      t.text :squares_xy # Hash
       t.integer :student_id
       t.integer :student_group_id
       t.integer :samples_nr
