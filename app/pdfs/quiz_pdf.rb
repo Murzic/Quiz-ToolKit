@@ -12,9 +12,8 @@ class QuizPdf < Prawn::Document
     @genquiz.copies.each do |copy|
       # stroke_axis
       @square_coordinates = Hash.new
-      qr = RQRCode::QRCode.new("#{copy.id}", size: 1, level: :h).to_img
-      qr.resize(50, 50).save("#{Rails.root}/app/pdfs/qrcodes/#{copy.id}.png")
-      set_header(copy)
+      @page = 1
+      set_header copy
       set_questions(copy)   
       start_new_page
       copy.squares_xy = @square_coordinates
@@ -33,9 +32,13 @@ class QuizPdf < Prawn::Document
     stroke_horizontal_line 0, 542, at: 0
     stroke_vertical_line 0, 720, at: 0
     undash
-    image "app/pdfs/qrcodes/#{copy.id}.png", at: [-25, 735]
+    qr = RQRCode::QRCode.new("#{copy.id} #{@page}", size: 1, level: :h).to_img
+    qr.resize(50, 50).save("#{Rails.root}/app/pdfs/qrcodes/#{copy.id}-#{@page}.png")
+    image "app/pdfs/qrcodes/#{copy.id}-#{@page}.png", at: [-25, 735]
     text "#{@quiz.name}", align: :center, size: 16
     move_down 20
+    draw_text! "#{@page}", at: [550, 0]
+    @page += 1
   end
 
   def set_questions(copy)
@@ -49,16 +52,25 @@ class QuizPdf < Prawn::Document
 
     questions_ordered.each do |question|
       @square_coordinates[question.id] = Hash.new
-      if cursor < 100 
+      range = ('a'..'z').to_a.reverse
+      if cursor < 30
         start_new_page
       end
       if cursor == 720
         set_header(copy)
       end
       span(500, position: :center) do
-        range = ('a'..'z').to_a.reverse
         text "#{i+=1}. #{question.name}", inline_format: true
-        question.answers.each do |answer|
+      end
+      question.answers.each do |answer|
+        if cursor < 30
+          start_new_page
+        end
+        if cursor == 720
+          set_header(copy)
+        end
+        # stroke_bounds
+        span(500, position: :center) do
           @square_coordinates[question.id][answer.id] = [bounds.absolute_left-36, bounds.absolute_bottom-36]
           stroke do
             rectangle [bounds.left, cursor], 9, 9
@@ -67,9 +79,10 @@ class QuizPdf < Prawn::Document
             text "#{range.pop}. #{answer.name}", inline_format: true
           end
         end
-        move_down 5
-        # transparent(0.5) { stroke_bounds }
+      # transparent(0.5) { stroke_bounds }
+
       end
+      move_down 5
     end
 
   end
