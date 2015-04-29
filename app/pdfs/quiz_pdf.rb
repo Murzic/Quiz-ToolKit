@@ -11,11 +11,14 @@ class QuizPdf < Prawn::Document
   def quiz_questions
     @genquiz.copies.each do |copy|
       # stroke_axis
+      @square_coordinates = Hash.new
       qr = RQRCode::QRCode.new("#{copy.id}", size: 1, level: :h).to_img
       qr.resize(50, 50).save("#{Rails.root}/app/pdfs/qrcodes/#{copy.id}.png")
       set_header(copy)
       set_questions(copy)   
       start_new_page
+      copy.squares_xy = @square_coordinates
+      copy.save
     end
   end
 
@@ -26,6 +29,10 @@ class QuizPdf < Prawn::Document
       text "#{student.name} #{student.surname}", align: :right, size: 12
       text "#{student_group.name}", align: :right, size: 12
     end
+    dash([1,2,3,2,1,5])
+    stroke_horizontal_line 0, 542, at: 0
+    stroke_vertical_line 0, 720, at: 0
+    undash
     image "app/pdfs/qrcodes/#{copy.id}.png", at: [-25, 735]
     text "#{@quiz.name}", align: :center, size: 16
     move_down 20
@@ -39,7 +46,9 @@ class QuizPdf < Prawn::Document
       end
     end
     i = 0
+
     questions_ordered.each do |question|
+      @square_coordinates[question.id] = Hash.new
       if cursor < 100 
         start_new_page
       end
@@ -50,6 +59,10 @@ class QuizPdf < Prawn::Document
         range = ('a'..'z').to_a.reverse
         text "#{i+=1}. #{question.name}", inline_format: true
         question.answers.each do |answer|
+          @square_coordinates[question.id][answer.id] = [bounds.absolute_left-36, bounds.absolute_bottom-36]
+          stroke do
+            rectangle [bounds.left, cursor], 9, 9
+          end
           indent(15) do
             text "#{range.pop}. #{answer.name}", inline_format: true
           end
@@ -58,6 +71,7 @@ class QuizPdf < Prawn::Document
         # transparent(0.5) { stroke_bounds }
       end
     end
+
   end
 
 
