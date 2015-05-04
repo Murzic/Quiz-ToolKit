@@ -23,16 +23,9 @@ gem 'paperclip'
 # Generates pdf files
 gem 'prawn'
 # Generate qr codes
-# gem 'rqrcode_png'
-# gem 'pngqr'
-gem 'strokes'
+gem 'rqrcode_png'
 # Optical character recognition gem 
 gem 'tesseract-ocr'
-# Image processing
-gem 'mini_magick'
-# QR code decoder
-# gem 'qrio'
-gem 'zbar'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

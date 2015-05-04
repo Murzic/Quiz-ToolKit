@@ -1,4 +1,3 @@
-
 class QuizPdf < Prawn::Document
   def initialize(genquiz)
     super()
@@ -30,10 +29,12 @@ class QuizPdf < Prawn::Document
     end
     dash([1,2,3,2,1,5])
     stroke_horizontal_line 0, 542, at: 0
-    stroke_vertical_line 0, 720, at: 0
+    stroke_vertical_line 0, 660, at: 0
     undash
-    qr = RQRCode::QRCode.new("#{copy.id} #{@page}", size: 1, level: :h).to_img
-    qr.resize(50, 50).save("#{Rails.root}/app/pdfs/qrcodes/#{copy.id}-#{@page}.png")
+    # qr = RQRCode::QRCode.new("#{copy.id}+#{@page}", size: 1, level: :h).to_img
+    # qr.resize(50, 50).save("#{Rails.root}/app/pdfs/qrcodes/#{copy.id}-#{@page}.png")
+    # Pngqr.encode "#{copy.id}+#{@page}", size: 2, border: 1, scale: 2, file: "#{Rails.root}/app/pdfs/qrcodes/#{copy.id}-#{@page}.png"
+    Strokes::Barcode.new(:qrcode, "#{copy.id}+#{@page}").save("#{Rails.root}/app/pdfs/qrcodes/#{copy.id}-#{@page}.png", width: 60)
     image "app/pdfs/qrcodes/#{copy.id}-#{@page}.png", at: [-25, 735]
     text "#{@quiz.name}", align: :center, size: 16
     move_down 20
