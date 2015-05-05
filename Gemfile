@@ -22,6 +22,7 @@ gem 'haml'
 gem 'paperclip'
 # Generates pdf files
 gem 'prawn'
+
 # Generate qr codes
 # gem 'rqrcode_png'
 # gem 'pngqr'
@@ -30,9 +31,13 @@ gem 'strokes'
 gem 'tesseract-ocr'
 # Image processing
 gem 'mini_magick'
+
 # QR code decoder
 # gem 'qrio'
 gem 'zbar'
+# Queueing backend for workers
+gem 'resque'
+gem 'redis'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
