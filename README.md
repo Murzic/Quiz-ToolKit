@@ -11,6 +11,8 @@
 
 * Then run the server with `rails s` 
 
+* In another terminal window, run `redis start` and then `COUNT=5 QUEUE=* rake environment resque:work`. (This will make the resque queueing background to process the images when they are uploaded)
+
 * You can now access the application at [localhost:3000](http://localhost:3000)
 
 
