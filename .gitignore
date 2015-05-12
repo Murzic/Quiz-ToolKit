@@ -15,6 +15,9 @@
 /log/*
 !/log/.keep
 /tmp
+redis.log
+dump.rdb
+redis.pid
 
 # Ignore the uploaded images
 /public/system/
