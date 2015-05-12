@@ -26,11 +26,13 @@ class QuizPdf < Prawn::Document
       student = Student.find(copy.student_id)
       text "#{student.name} #{student.surname}", align: :right, size: 12
       text "#{student_group.name}", align: :right, size: 12
+    else
+      move_down 24
     end
-    dash([1,2,3,2,1,5])
-    stroke_horizontal_line 0, 542, at: 0
-    stroke_vertical_line 0, 660, at: 0
-    undash
+    # dash([1,2,3,2,1,5])
+    stroke_horizontal_line -10, 100, at: -10
+    stroke_vertical_line -10, 100, at: -10
+    # undash
     # qr = RQRCode::QRCode.new("#{copy.id}+#{@page}", size: 1, level: :h).to_img
     # qr.resize(50, 50).save("#{Rails.root}/app/pdfs/qrcodes/#{copy.id}-#{@page}.png")
     # Pngqr.encode "#{copy.id}+#{@page}", size: 2, border: 1, scale: 2, file: "#{Rails.root}/app/pdfs/qrcodes/#{copy.id}-#{@page}.png"
