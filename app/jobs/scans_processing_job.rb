@@ -17,11 +17,10 @@ class ScansProcessingJob < ActiveJob::Base
 
     line = find_marker(scanned_quiz)
 
-    unless line.empty? 
 
     
     # puts "teststring!!!"
-    puts line
+    p line
     # begin
     #   puts qr.at(0).data
     # rescue NoMethodError
@@ -42,27 +41,25 @@ class ScansProcessingJob < ActiveJob::Base
   def find_marker(scanned_quiz)
     begin
       png = ChunkyPNG::Image.from_file(scanned_quiz.scan.path); nil
-      array = Array.new
-      (0..200).each do |i| 
-        (620..791).to_a.reverse.each do |j|
-          if ChunkyPNG::Color.to_hex(png[i, j])[1,6] != "ffffff"
-            array << i << j
-            break
-          end
-        end
-      end
+      h = png.height
+      w = png.width
 
-      unless array.empty?
-        u1 = array[-2]
-        u2 = array[-1]
+      lp = find_line_pixels(png, 0..150, h-50..h-1)
+    
+      unless lp.empty?
+        u1 = lp[-2]-lp[0]
+        u2 = lp[-1]-lp[1]
         v1 = u1
-        v2 = array.second
+        v2 = 0
         cosalpha = (u1*v1 + u2*v2).abs/(Math.sqrt(u1**2 + u2**2) * Math.sqrt(v1**2 + v2**2))
         degrees = Math.acos(cosalpha)*180/Math::PI
+        puts "u1 = #{lp[-2]}-#{lp[1]}=#{u1}, u2 = #{lp[-1]}-#{lp[2]} #{u2}, v1 = #{v1}, v2 = #{v2}"
+        puts cosalpha
+        puts degrees
         image = MiniMagick::Image.new(scanned_quiz.scan.path)
-        if u2 > v2
+        if u2 < v2
           image.rotate "#{degrees}"
-        elsif u2 < v2
+        elsif u2 > v2
           image.rotate "-#{degrees}"
         end
       else 
@@ -70,9 +67,25 @@ class ScansProcessingJob < ActiveJob::Base
       end
 
 
-
     rescue Exception => e
       puts e.message
+    end
+    lp
+  end
+
+  def find_line_pixels(pixels, x_range, y_range)
+    array = Array.new
+    gray_range = (0..100)
+    x_range.each do |i| 
+      y_range.to_a.reverse.each do |j|
+        r,g,b = ChunkyPNG::Color.to_truecolor_bytes(pixels[i, j])
+        if gray_range === r && gray_range === g && gray_range === b
+          if r == g && r == b
+            array << i << j
+            break
+          end
+        end
+      end
     end
     array
   end
