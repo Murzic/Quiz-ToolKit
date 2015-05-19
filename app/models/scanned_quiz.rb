@@ -7,6 +7,6 @@ class ScannedQuiz < ActiveRecord::Base
 
   has_attached_file :scan, path: ':rails_root/public/system/:class/:attachment/:updated_at/:filename'
   validates_attachment :scan, presence: true,
-    content_type: { content_type: "image/png" },
+    content_type: { content_type: ["image/png", "image/jpeg"] },
     size: { less_than: 200.kilobytes }
 end

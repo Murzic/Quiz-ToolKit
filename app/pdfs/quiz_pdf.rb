@@ -30,7 +30,7 @@ class QuizPdf < Prawn::Document
       move_down 24
     end
     # dash([1,2,3,2,1,5])
-    stroke_horizontal_line -10, 100, at: -10
+    stroke_horizontal_line -10, 500, at: -10
     stroke_vertical_line -10, 100, at: -10
     # undash
     # qr = RQRCode::QRCode.new("#{copy.id}+#{@page}", size: 1, level: :h).to_img
@@ -74,7 +74,7 @@ class QuizPdf < Prawn::Document
         end
         # stroke_bounds
         span(500, position: :center) do
-          @square_coordinates[question.id][answer.id] = [bounds.absolute_left-36, bounds.absolute_bottom-36]
+          @square_coordinates[question.id][answer.id] = [bounds.absolute_left-26, bounds.absolute_bottom-26]
           stroke do
             rectangle [bounds.left, cursor], 9, 9
           end
