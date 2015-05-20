@@ -30,17 +30,26 @@ class QuizPdf < Prawn::Document
       move_down 24
     end
     # dash([1,2,3,2,1,5])
-    stroke_horizontal_line -10, 100, at: -10
-    stroke_vertical_line -10, 100, at: -10
+    # stroke_axis
+    # stroke_horizontal_line -10, 100, at: -10
+    # stroke_vertical_line -10, 100, at: -10
+    stroke do
+      circle [-10, 730], 10
+      line [-10, 735], [-10,725]
+      line [-15, 730], [-5, 730]
+      circle [-10, -10], 10
+      circle [550, -10], 10
+      circle [550, 730], 10
+    end
     # undash
     # qr = RQRCode::QRCode.new("#{copy.id}+#{@page}", size: 1, level: :h).to_img
     # qr.resize(50, 50).save("#{Rails.root}/app/pdfs/qrcodes/#{copy.id}-#{@page}.png")
     # Pngqr.encode "#{copy.id}+#{@page}", size: 2, border: 1, scale: 2, file: "#{Rails.root}/app/pdfs/qrcodes/#{copy.id}-#{@page}.png"
     Strokes::Barcode.new(:qrcode, "#{copy.id}+#{@page}").save("#{Rails.root}/app/pdfs/qrcodes/#{copy.id}-#{@page}.png", width: 60)
-    image "app/pdfs/qrcodes/#{copy.id}-#{@page}.png", at: [-25, 735]
+    image "app/pdfs/qrcodes/#{copy.id}-#{@page}.png", at: [10, 735]
     text "#{@quiz.name}", align: :center, size: 16
     move_down 20
-    draw_text! "#{@page}", at: [550, 0]
+    draw_text! "#{@page}", at: [550, 5]
     @page += 1
   end
 
@@ -74,7 +83,12 @@ class QuizPdf < Prawn::Document
         end
         # stroke_bounds
         span(500, position: :center) do
-          @square_coordinates[question.id][answer.id] = [bounds.absolute_left-36, bounds.absolute_bottom-36]
+          puts "bot: #{bounds.absolute_bottom}"
+          puts "top: #{bounds.absolute_top}"
+          puts "corrected: #{756-26-bounds.absolute_bottom+36}"
+          puts "left: #{bounds.absolute_left}"
+
+          @square_coordinates[question.id][answer.id] = [bounds.absolute_left-26, 756-26-bounds.absolute_bottom+36]
           stroke do
             rectangle [bounds.left, cursor], 9, 9
           end
