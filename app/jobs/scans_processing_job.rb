@@ -2,8 +2,9 @@ class ScansProcessingJob < ActiveJob::Base
   queue_as :urgent
 
   def perform(scanned_quiz)
-    
-    qr = read_qr(scanned_quiz)
+    @scanned_quiz = scanned_quiz
+
+    qr = read_qr()
 
     if qr.at(0).is_a? ZBar::Symbol
       copy_id = qr.at(0).data.gsub(/\+\d*/, '')
@@ -15,12 +16,12 @@ class ScansProcessingJob < ActiveJob::Base
       # puts copy.squares_xy
     end
 
-    line = find_marker(scanned_quiz)
+    circle = left_top_marker()
 
 
     
     # puts "teststring!!!"
-    p line
+    p circle
     # begin
     #   puts qr.at(0).data
     # rescue NoMethodError
@@ -28,49 +29,69 @@ class ScansProcessingJob < ActiveJob::Base
     # end
   end
 
-  def read_qr(scanned_quiz)
-    image = MiniMagick::Image.open(scanned_quiz.scan.path)
+  def read_qr()
+    puts "Reading QR code.."
+    image = MiniMagick::Image.open(@scanned_quiz.scan.path)
+    orig_format = image.type.downcase
     width_c = image.width / 612.0
     heigth_c = image.height / 792.0
-    image.crop "#{60*width_c}x#{60*heigth_c}+#{10*width_c}+#{heigth_c*20}"
-    image.format "jpg"
-    image.write "public/system/qrcodes/#{scanned_quiz.id}.jpg"
-    qr = ZBar::Image.from_jpeg(File.read("public/system/qrcodes/#{scanned_quiz.id}.jpg")).process
+    image.crop "#{100*width_c}x#{125*heigth_c}+#{10*width_c}+#{heigth_c*20}"
+    image.format "pgm"
+    image.write "public/system/qrcodes/#{@scanned_quiz.id}.pgm"
+    image = nil
+    image = MiniMagick::Image.open(@scanned_quiz.scan.path)
+    puts "Thresholding.."
+    if orig_format == "jpeg"
+      image.format "png"
+      image.threshold "60%"
+      image.write @scanned_quiz.scan.path
+      puts "Image converted to png"
+    elsif orig_format == "png"
+      image.threshold "60%"
+      image.write @scanned_quiz.scan.path
+    end
+
+    begin 
+      qr = ZBar::Image.from_pgm(File.read("public/system/qrcodes/#{@scanned_quiz.id}.pgm")).process
+    rescue Exception => e
+      puts "The qr code wasn't processed. The error:"
+      puts e.inspect
+    end
   end
 
-  def find_marker(scanned_quiz)
+  def left_top_marker()
     begin
-      png = ChunkyPNG::Image.from_file(scanned_quiz.scan.path); nil
+      puts "Searching for top left marker.."
+      png = ChunkyPNG::Image.from_file(@scanned_quiz.scan.path); nil
       h = png.height
       w = png.width
 
-      lp = find_line_pixels(png, 0..150, h-50..h-1)
-    
-      unless lp.empty?
-        u1 = lp[-2]-lp[0]
-        u2 = lp[-1]-lp[1]
-        v1 = u1
-        v2 = 0
-        cosalpha = (u1*v1 + u2*v2).abs/(Math.sqrt(u1**2 + u2**2) * Math.sqrt(v1**2 + v2**2))
-        degrees = Math.acos(cosalpha)*180/Math::PI
-        puts "u1 = #{lp[-2]}-#{lp[1]}=#{u1}, u2 = #{lp[-1]}-#{lp[2]} #{u2}, v1 = #{v1}, v2 = #{v2}"
-        puts cosalpha
-        puts degrees
-        image = MiniMagick::Image.new(scanned_quiz.scan.path)
-        if u2 < v2
-          image.rotate "#{degrees}"
-        elsif u2 > v2
-          image.rotate "-#{degrees}"
+      marker = Hash["x" => Array.new, "y" => Array.new]
+      black = false 
+      (40*w/612).times.each do |x|
+        (40*h/792).times.each do |y|
+          if ChunkyPNG::Color.to_hex(png[x, y], false)[1,6] == "000000"
+            marker["x"] << x
+            marker["y"] << y
+            if black == false
+              black = true
+            end
+          end
         end
-      else 
-        raise "Marker not found!" 
+        if black == true
+          unless marker["x"].include? x
+            break
+          end
+        end
       end
+
+
 
 
     rescue Exception => e
       puts e.message
     end
-    lp
+    marker
   end
 
   def find_line_pixels(pixels, x_range, y_range)
