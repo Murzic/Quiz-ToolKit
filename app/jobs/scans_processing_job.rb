@@ -15,6 +15,7 @@ class ScansProcessingJob < ActiveJob::Base
       # puts scanned_quiz.scan.path
       # puts copy.squares_xy
     end
+    puts @coordinates
 
     marker_processing()
 
@@ -35,7 +36,7 @@ class ScansProcessingJob < ActiveJob::Base
     orig_format = image.type.downcase
     width_c = image.width / 612.0
     heigth_c = image.height / 792.0
-    image.crop "#{100*width_c}x#{125*heigth_c}+#{10*width_c}+#{heigth_c*20}"
+    image.crop "#{(150*width_c).round}x#{(100*heigth_c).round}+0+0"
     image.format "pgm"
     image.write "public/system/qrcodes/#{@scanned_quiz.id}.pgm"
     image = nil
@@ -78,9 +79,9 @@ class ScansProcessingJob < ActiveJob::Base
 
   
     
-      tl_coord = [tl["x"].min+(tl["x"].max-tl["x"].min)/2.0, tl["y"].min+(tl["y"].max-tl["y"].min)/2.0]
+      tl_coord = [(tl["x"].min+(tl["x"].max-tl["x"].min)/2.0).round, (tl["y"].min+(tl["y"].max-tl["y"].min)/2.0).round]
       p "Top-left coordinate: #{tl_coord}"
-      bl_coord = [bl["x"].min+(bl["x"].max-bl["x"].min)/2.0, bl["y"].min+(bl["y"].max-bl["y"].min)/2.0]
+      bl_coord = [(bl["x"].min+(bl["x"].max-bl["x"].min)/2.0).round, (bl["y"].min+(bl["y"].max-bl["y"].min)/2.0).round]
       p "Bottom-left coordinate: #{bl_coord}"
       dpi_ratio = Math.sqrt((tl_coord[0]-bl_coord[0])**2+(tl_coord[1]-bl_coord[1])**2)/740
       puts "The dpi_ratio is: #{dpi_ratio}"
@@ -96,8 +97,8 @@ class ScansProcessingJob < ActiveJob::Base
           if current_page == @page_nr.to_i
             ((carray[1]*dpi_ratio).round..((carray[1]+9)*dpi_ratio).round).each do |y|
               (((carray[0])*dpi_ratio).round..((carray[0]+9)*dpi_ratio).round).each do |x|
-                corrected_x = x * Math.cos(rads) - y * Math.sin(rads)
-                corrected_y = y * Math.cos(rads) + x * Math.sin(rads)
+                corrected_x = x * Math.cos(-rads) - y * Math.sin(-rads)
+                corrected_y = y * Math.cos(-rads) + x * Math.sin(-rads)
                 square_pixels << ChunkyPNG::Color.to_hex(png[corrected_x.round + tl_coord[0], 
                       corrected_y.round + tl_coord[1]], false)
                 # print "(#{corrected_x.round + tl_coord[0]},#{corrected_y.round + tl_coord[1]})"
@@ -107,27 +108,15 @@ class ScansProcessingJob < ActiveJob::Base
 
           # puts carray[0]
           # puts carray[1]
+          # blablax = (carray[0]*dpi_ratio).round * Math.cos(-rads) - (carray[1]*dpi_ratio).round * Math.sin(-rads)
+          # blablai = (carray[1]*dpi_ratio).round * Math.cos(-rads) + (carray[0]*dpi_ratio).round * Math.sin(-rads)
+          # puts blablax.round
+          # puts blablai.round
+
           # puts ((carray[0]*dpi_ratio).round + tl_coord[0])
           # puts ((carray[1]*dpi_ratio).round + tl_coord[1])
 
-          puts "Array length: #{square_pixels.length}"
-          counter = Math.sqrt(square_pixels.length).round-1
-          square_pixels.length.times do |i|
-            if i == counter
-              counter += Math.sqrt(square_pixels.length).round
-              if square_pixels[i][1,6] != "ffffff"
-                print "1\n"
-              else
-                print "0\n"
-              end
-            else
-              if square_pixels[i][1,6] != "ffffff"
-                print "1 "
-              else
-                print "0 "
-              end
-            end
-          end
+          print_square(square_pixels)
 
           prev_y = carray[1]
         end
@@ -184,6 +173,27 @@ class ScansProcessingJob < ActiveJob::Base
     radians = degrees*Math::PI/180
     puts "or #{radians} radians."
     radians
+  end
+
+  def print_square(sp)
+    puts "Array length: #{sp.length}"
+    counter = Math.sqrt(sp.length).round-1
+    sp.length.times do |i|
+      if i == counter
+        counter += Math.sqrt(sp.length).round
+        if sp[i][1,6] != "ffffff"
+          print "1\n"
+        else
+          print "0\n"
+        end
+      else
+        if sp[i][1,6] != "ffffff"
+          print "1 "
+        else
+          print "0 "
+        end
+      end
+    end
   end
 
 
