@@ -78,12 +78,12 @@ class ScansProcessingJob < ActiveJob::Base
 
   
     
-      dpi_ratio = (tl["x"].max-tl["x"].min)/20.0
-      puts "The dpi_ratio is: #{dpi_ratio}"
       tl_coord = [tl["x"].min+(tl["x"].max-tl["x"].min)/2.0, tl["y"].min+(tl["y"].max-tl["y"].min)/2.0]
       p "Top-left coordinate: #{tl_coord}"
       bl_coord = [bl["x"].min+(bl["x"].max-bl["x"].min)/2.0, bl["y"].min+(bl["y"].max-bl["y"].min)/2.0]
       p "Bottom-left coordinate: #{bl_coord}"
+      dpi_ratio = Math.sqrt((tl_coord[0]-bl_coord[0])**2+(tl_coord[1]-bl_coord[1])**2)/740
+      puts "The dpi_ratio is: #{dpi_ratio}"
 
       rads = rotation_detection(tl_coord, bl_coord)
 
@@ -91,9 +91,43 @@ class ScansProcessingJob < ActiveJob::Base
       current_page = 1
       @coordinates.each do |qid, ahash|
         ahash.each do |aid, carray|
+          square_pixels = Array.new
           current_page += 1 if carray[1] < prev_y
           if current_page == @page_nr.to_i
-            
+            ((carray[1]*dpi_ratio).round..((carray[1]+9)*dpi_ratio).round).each do |y|
+              (((carray[0])*dpi_ratio).round..((carray[0]+9)*dpi_ratio).round).each do |x|
+                corrected_x = x * Math.cos(rads) - y * Math.sin(rads)
+                corrected_y = y * Math.cos(rads) + x * Math.sin(rads)
+                square_pixels << ChunkyPNG::Color.to_hex(png[corrected_x.round + tl_coord[0], 
+                      corrected_y.round + tl_coord[1]], false)
+                # print "(#{corrected_x.round + tl_coord[0]},#{corrected_y.round + tl_coord[1]})"
+              end
+            end
+          end
+
+          # puts carray[0]
+          # puts carray[1]
+          # puts ((carray[0]*dpi_ratio).round + tl_coord[0])
+          # puts ((carray[1]*dpi_ratio).round + tl_coord[1])
+
+          puts "Array length: #{square_pixels.length}"
+          counter = Math.sqrt(square_pixels.length).round-1
+          square_pixels.length.times do |i|
+            if i == counter
+              counter += Math.sqrt(square_pixels.length).round
+              if square_pixels[i][1,6] != "ffffff"
+                print "1\n"
+              else
+                print "0\n"
+              end
+            else
+              if square_pixels[i][1,6] != "ffffff"
+                print "1 "
+              else
+                print "0 "
+              end
+            end
+          end
 
           prev_y = carray[1]
         end
