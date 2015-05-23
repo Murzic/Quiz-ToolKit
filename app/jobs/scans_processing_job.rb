@@ -3,6 +3,7 @@ class ScansProcessingJob < ActiveJob::Base
 
   def perform(scanned_quiz)
     @scanned_quiz = scanned_quiz
+    @answers = Array.new
 
     qr = read_qr()
 
@@ -11,16 +12,30 @@ class ScansProcessingJob < ActiveJob::Base
       @page_nr = qr.at(0).data.gsub(/\d+\+/, '')
       # puts copy_id
       # puts page_nr
-      @coordinates = Copy.find(copy_id).squares_xy
-      # puts scanned_quiz.scan.path
-      # puts copy.squares_xy
+      @copy = Copy.find(copy_id)
+      @copy_answers = @copy.answers
+      @coordinates = @copy.squares_xy
+
+    else
+      raise "QR code wasn't decoded!"
     end
     puts @coordinates
 
     marker_processing()
 
+    if @answers
+      puts "Saving checked answers"
+      if @copy_answers
+        @copy.answers = @copy_answers | @answers
+      else
+        @copy.answers = @answers
+      end
+      @copy.save
+    end
 
-    
+    puts @answers
+
+
     # puts "teststring!!!"
     
     # begin
@@ -30,13 +45,15 @@ class ScansProcessingJob < ActiveJob::Base
     # end
   end
 
+
+  ###############################################
   def read_qr()
     puts "Reading QR code.."
     image = MiniMagick::Image.open(@scanned_quiz.scan.path)
     orig_format = image.type.downcase
     width_c = image.width / 612.0
     heigth_c = image.height / 792.0
-    image.crop "#{(150*width_c).round}x#{(100*heigth_c).round}+0+0"
+    image.crop "#{(150*width_c).round}x#{(100*heigth_c).round-1}+0+0"
     image.format "pgm"
     image.write "public/system/qrcodes/#{@scanned_quiz.id}.pgm"
     image = nil
@@ -60,6 +77,8 @@ class ScansProcessingJob < ActiveJob::Base
     end
   end
 
+
+  ##############################################################
   def marker_processing()
     begin
       puts "Image loading.."
@@ -106,6 +125,22 @@ class ScansProcessingJob < ActiveJob::Base
             end
           end
 
+          puts "White pixels:"
+          white_pixels = square_pixels.count "#ffffff"
+          puts white_pixels
+          puts "Black pixels:"
+          black_pixels = square_pixels.count "#000000"
+          puts black_pixels
+          puts "B/W ratio:"
+          bw_ratio = black_pixels.fdiv(white_pixels)
+          puts bw_ratio
+
+          ## Add the checked answered to array
+          if bw_ratio > 1
+            @answers << aid
+          end
+
+
           # puts carray[0]
           # puts carray[1]
           # blablax = (carray[0]*dpi_ratio).round * Math.cos(-rads) - (carray[1]*dpi_ratio).round * Math.sin(-rads)
@@ -121,16 +156,13 @@ class ScansProcessingJob < ActiveJob::Base
           prev_y = carray[1]
         end
       end
-
-
-
     rescue Exception => e
       puts e.message
     end
-
   end
 
 
+  ##################################################
   def find_marker(pixels, x_range, y_range)
     marker = Hash["x" => Array.new, "y" => Array.new]
     black = false 
@@ -158,6 +190,8 @@ class ScansProcessingJob < ActiveJob::Base
     marker
   end
 
+
+  #####################################
   def rotation_detection(u, v)
     u1 = v[1] - u[1]
     u2 = 0
@@ -175,6 +209,8 @@ class ScansProcessingJob < ActiveJob::Base
     radians
   end
 
+
+  ##########################################
   def print_square(sp)
     puts "Array length: #{sp.length}"
     counter = Math.sqrt(sp.length).round-1
@@ -196,21 +232,4 @@ class ScansProcessingJob < ActiveJob::Base
     end
   end
 
-
-  # def find_line_pixels(pixels, x_range, y_range)
-  #   array = Array.new
-  #   gray_range = (0..100)
-  #   x_range.each do |i| 
-  #     y_range.to_a.reverse.each do |j|
-  #       r,g,b = ChunkyPNG::Color.to_truecolor_bytes(pixels[i, j])
-  #       if gray_range === r && gray_range === g && gray_range === b
-  #         if r == g && r == b
-  #           array << i << j
-  #           break
-  #         end
-  #       end
-  #     end
-  #   end
-  #   array
-  # end
 end
