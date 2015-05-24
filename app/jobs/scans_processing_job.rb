@@ -15,10 +15,10 @@ class ScansProcessingJob < ActiveJob::Base
       @copy = Copy.find(copy_id)
       @copy_answers = @copy.answers
       @coordinates = @copy.squares_xy
-
     else
       raise "QR code wasn't decoded!"
     end
+
     puts @coordinates
 
     marker_processing()
@@ -33,7 +33,9 @@ class ScansProcessingJob < ActiveJob::Base
       @copy.save
     end
 
-    puts @answers
+    p @answers
+
+    quiz_marking()
 
 
     # puts "teststring!!!"
@@ -77,9 +79,13 @@ class ScansProcessingJob < ActiveJob::Base
     end
   end
 
+  ########################################################
+  def quiz_marking
+    
+  end
 
   ##############################################################
-  def marker_processing()
+  def answers_processing()
     begin
       puts "Image loading.."
       png = ChunkyPNG::Image.from_file(@scanned_quiz.scan.path); nil

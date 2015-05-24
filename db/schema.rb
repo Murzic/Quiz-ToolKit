@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150421102942) do
+ActiveRecord::Schema.define(version: 20150524082314) do
 
   create_table "answers", force: :cascade do |t|
     t.text     "name"
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 20150421102942) do
     t.integer  "generated_quiz_id"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.float    "mark"
   end
 
   add_index "copies", ["generated_quiz_id"], name: "index_copies_on_generated_quiz_id"
@@ -58,6 +59,22 @@ ActiveRecord::Schema.define(version: 20150421102942) do
 
   add_index "courses_student_groups", ["course_id"], name: "index_courses_student_groups_on_course_id"
   add_index "courses_student_groups", ["student_group_id"], name: "index_courses_student_groups_on_student_group_id"
+
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer  "priority",   default: 0, null: false
+    t.integer  "attempts",   default: 0, null: false
+    t.text     "handler",                null: false
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
 
   create_table "generated_quizzes", force: :cascade do |t|
     t.integer  "course_id"
