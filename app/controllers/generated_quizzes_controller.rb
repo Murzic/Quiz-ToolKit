@@ -1,12 +1,13 @@
 class GeneratedQuizzesController < ApplicationController
   def index
     @user = current_user
-    @generated_quizzes = @user.generated_quizzes.all
+    @generated_quizzes = @user.generated_quizzes.includes(:copies).where.not(copies: { answers: nil } )
     @courses = @user.courses
   end
 
   def show
     @generated_quiz = GeneratedQuiz.find(params[:id])
+    @copies = @generated_quiz.copies.joins(:student).select('students.name, students.surname, copies.mark')
     @quiz = Quiz.find(@generated_quiz.quiz_id)
   end
 

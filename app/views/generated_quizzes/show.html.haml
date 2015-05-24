@@ -8,13 +8,12 @@
     %li.active= @quiz.name
 
   .panel-body
-
-    .panel.panel-default
-      .panel-heading Attributes:
-      .list-group
-        - @generated_quiz.attributes.each do |key, value|
-          .list-group-item
-            .row
-              .col-md-4= key
-              .col-md-8= value
+    %table.table.table-hover
+      %tr
+        %th Student
+        %th Mark
+      - @copies.each do |copy|
+        %tr
+          %td= "#{copy.name} #{copy.surname}"
+          %td= "#{copy.mark}"
 

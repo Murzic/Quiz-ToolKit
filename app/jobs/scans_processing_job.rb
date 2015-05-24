@@ -183,7 +183,7 @@ class ScansProcessingJob < ActiveJob::Base
           # puts ((carray[0]*dpi_ratio).round + tl_coord[0])
           # puts ((carray[1]*dpi_ratio).round + tl_coord[1])
 
-          # print_square(square_pixels)
+          print_square(square_pixels)
 
           prev_y = carray[1]
         end
