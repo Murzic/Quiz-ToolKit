@@ -21,7 +21,7 @@ class ScansProcessingJob < ActiveJob::Base
 
     puts @coordinates
 
-    marker_processing()
+    answers_processing()
 
     if @answers
       puts "Saving checked answers"
@@ -35,7 +35,7 @@ class ScansProcessingJob < ActiveJob::Base
 
     p @answers
 
-    quiz_marking()
+    puts "#{quiz_marking}%"
 
 
     # puts "teststring!!!"
@@ -81,7 +81,33 @@ class ScansProcessingJob < ActiveJob::Base
 
   ########################################################
   def quiz_marking
-    
+    puts "Starting quiz marking.."
+    correct_answers = Array.new
+    copy_answers = @copy.answers
+    questions = Question.where(id: @copy.questions).includes(:answers).where(answers: { correct: true })
+    questions.each do |q|
+      correct_answers = correct_answers + q.answer_ids
+    end
+
+    ## Gets the correct chosen answers' ids
+    correct_answered = correct_answers & copy_answers
+    incorrect_answered = copy_answers - correct_answers
+
+    puts "Answered: #{copy_answers.length}"
+    p copy_answers
+    puts "Correct answers: #{correct_answers.length}"
+    p correct_answers
+    puts "Correct answered: #{correct_answered.length}"
+    p correct_answered
+    puts "Incorrect answered: #{incorrect_answered.length}"
+    p incorrect_answered
+    mark = (correct_answered.length-incorrect_answered.length).fdiv(correct_answers.length)*100
+
+    ## Updating mark field in copies table
+    @copy.mark = mark
+    @copy.save
+
+    mark
   end
 
   ##############################################################
@@ -157,7 +183,7 @@ class ScansProcessingJob < ActiveJob::Base
           # puts ((carray[0]*dpi_ratio).round + tl_coord[0])
           # puts ((carray[1]*dpi_ratio).round + tl_coord[1])
 
-          print_square(square_pixels)
+          # print_square(square_pixels)
 
           prev_y = carray[1]
         end
