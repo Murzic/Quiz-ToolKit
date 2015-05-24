@@ -31,7 +31,7 @@ gem 'strokes'
 gem 'tesseract-ocr'
 # Image processing
 gem 'mini_magick'
-gem 'chunky_png'
+gem 'oily_png'
 
 # QR code decoder
 # gem 'qrio'
