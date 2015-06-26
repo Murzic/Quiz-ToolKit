@@ -49,3 +49,6 @@ Todo
 2. Take into account scanning imperfections when processing the scanned image
 3. Statistics
 
+License
+---------
+See [LICENSE](https://github.com/Murzic/Quiz-ToolKit/blob/master/LICENSE.md)
