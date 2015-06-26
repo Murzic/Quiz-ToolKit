@@ -27,3 +27,6 @@
 *.jpg
 /app/pdfs/qrcodes/
 !/app/pdfs/qrcodes/.gitkeep
+
+# Ignore Tesseract related files
+/tessdata
