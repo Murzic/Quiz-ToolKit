@@ -37,8 +37,10 @@ Groups of students can be created, which will be used to generate quizzes for sp
 ![](/public/screenshots/2.PNG)
 A list of options is provided when generating a quiz. 
 ![](/public/screenshots/5.PNG)
+In the "Generate Quizzes" tab we can see the student grades for specific quizzes.
+![](/public/screenshots/6.PNG)
 
-An exmaple of a generated quiz page:
+An example of a generated quiz page:
 ![](/public/screenshots/generated_quiz.JPG)
 
 Todo
