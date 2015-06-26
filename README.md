@@ -29,13 +29,13 @@ Installation and running
 Usage
 --------------
 In QuizToolKit you can add, remove and edit courses and their quizzes.
-![](/public/screenshots/1.png)
+![](/public/screenshots/1.PNG)
 When you access a quiz, you will get the list of questions that it has. Answers and question groups can be added to each question.
-![](/public/screenshots/3.png)
+![](/public/screenshots/3.PNG)
 Groups of students can be created, which will be used to generate quizzes for specific students and then grade them accordingly 
-![](/public/screenshots/2.png)
+![](/public/screenshots/2.PNG)
 A list of options is provided when generating a quiz. 
-![](/public/screenshots/5.png)
+![](/public/screenshots/5.PNG)
 
 An exmaple of a generated quiz page:
 ![](/public/screenshots/generated_quiz.JPG)
