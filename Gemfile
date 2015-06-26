@@ -28,7 +28,7 @@ gem 'prawn'
 # gem 'pngqr'
 gem 'strokes'
 # Optical character recognition gem 
-gem 'tesseract-ocr'
+# gem 'tesseract-ocr'
 # Image processing
 gem 'mini_magick'
 gem 'oily_png'

@@ -55,7 +55,7 @@ class ScansProcessingJob < ActiveJob::Base
     orig_format = image.type.downcase
     width_c = image.width / 612.0
     heigth_c = image.height / 792.0
-    image.crop "#{(150*width_c).round}x#{(100*heigth_c).round-1}+0+0"
+    image.crop "#{(150*width_c).round}x#{(150*heigth_c).round-1}+0+0"
     image.format "pgm"
     image.write "public/system/qrcodes/#{@scanned_quiz.id}.pgm"
     image = nil
@@ -129,9 +129,9 @@ class ScansProcessingJob < ActiveJob::Base
       y_dist = 60*h/792
 
       puts "Searching for markers.."
-      tl = find_marker(png, 0..x_dist, 0..y_dist) # top-left
+      tl = find_marker(png, (8*w/612)..x_dist, (8*h/792)..y_dist) # top-left
       tr = find_marker(png, ((w-x_dist)..(w-1)).to_a.reverse, 0..y_dist) # top-right
-      bl = find_marker(png, 0..x_dist, ((h-y_dist)..(h-1)).to_a.reverse)  # bot-left
+      bl = find_marker(png, (8*w/612)..x_dist, ((h-y_dist)..(h-(8*h/792))).to_a.reverse)  # bot-left
       br = find_marker(png, ((w-x_dist)..(w-1)).to_a.reverse,
         ((h-y_dist)..(h-1)).to_a.reverse) # bot-right
 
