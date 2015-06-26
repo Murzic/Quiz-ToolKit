@@ -28,6 +28,7 @@ Installation and running
 
 Usage
 --------------
+
 In QuizToolKit you can add, remove and edit courses and their quizzes.
 ![](/public/screenshots/1.PNG)
 When you access a quiz, you will get the list of questions that it has. Answers and question groups can be added to each question.
@@ -45,5 +46,4 @@ Todo
 1. Write tests
 2. Take into account scanning imperfections when processing the scanned image
 3. Statistics
-
 
